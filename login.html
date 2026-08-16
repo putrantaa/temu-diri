@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masuk - Sahabat BK</title>
+<meta name="description" content="Masuk ke Sahabat BK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">SB</span>
+      Sahabat BK
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="mood.html">Mood Tracker</a></li>
+      <li><a href="konsultasi.html">Konsultasi</a></li>
+      <li><a href="jurnal.html">Jurnal & Curhat</a></li>
+      <li><a href="literasi.html">Literasi Mental</a></li>
+      <li><a href="login.html" aria-current="page">Masuk</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section section-alt">
+    <div class="container" style="max-width: 480px; padding-top: 40px; padding-bottom: 60px;">
+      <div class="card" style="padding: 40px 30px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h2 style="margin-bottom: 8px;">Masuk ke Akun</h2>
+          <p style="color:var(--color-ink-soft); font-size:0.92rem;">Silakan masuk untuk menyimpan jurnal dan mood tracker kamu.</p>
+        </div>
+        
+        <form id="loginForm" action="#">
+          <div class="field">
+            <label for="username">NIS atau Email</label>
+            <input type="text" id="username" placeholder="Masukkan NIS atau Email" required>
+          </div>
+          
+          <div class="field">
+            <label for="password">Kata Sandi</label>
+            <input type="password" id="password" placeholder="Masukkan kata sandi" required>
+            <div style="text-align: right; margin-top: 6px;">
+              <a href="#" style="font-size: 0.8rem; color: var(--color-teal-dark);">Lupa kata sandi?</a>
+            </div>
+          </div>
+          
+          <div class="checkbox-row" style="margin-bottom: 30px;">
+            <input type="checkbox" id="remember">
+            <label for="remember" style="margin: 0; font-weight: normal;">Ingat saya</label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--color-ink-soft);">
+          Belum punya akun? <a href="register.html" style="color: var(--color-teal-dark); font-weight: bold;">Daftar di sini</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <span>Sahabat BK - dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
+  </div>
+</footer>
+
+<!-- ============ MODAL PERSETUJUAN PRIVASI ============ -->
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> - belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<!-- ============ TOMBOL & MODAL DARURAT ============ -->
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+
+    <a class="crisis-contact" href="tel:119">
+      <strong>☎️ Hotline Sejiwa - 119 ext. 8</strong>
+      <span>Layanan Kementerian Kesehatan RI, gratis & rahasia, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener">
+      <strong>💬 WhatsApp Healing119</strong>
+      <span>+62 813-8007-3120 - chat dengan konselor, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="#">
+      <strong>🏫 Kontak Darurat Sekolah</strong>
+      <span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span>
+    </a>
+
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
