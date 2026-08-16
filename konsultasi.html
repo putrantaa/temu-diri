@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Konsultasi — BK Sahabat</title>
+<meta name="description" content="Pilih Guru BK dan atur jadwal konsultasi online atau tatap muka.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">BK</span>
+      BK Sahabat
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="mood.html">Mood Tracker</a></li>
+      <li><a href="konsultasi.html" aria-current="page">Konsultasi</a></li>
+      <li><a href="jurnal.html">Jurnal & Curhat</a></li>
+      <li><a href="literasi.html">Literasi Mental</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Ngobrol langsung</span>
+      <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:20ch;">Pilih Guru BK, atur jadwalmu sendiri.</h1>
+      <p style="color:var(--color-ink-soft); max-width:60ch;">Setiap Guru BK punya gaya ngobrol yang beda. Pilih yang paling cocok sama apa yang mau kamu ceritakan.</p>
+
+      <div class="notice">
+        <strong>Catatan versi contoh:</strong> karena situs ini murni HTML/CSS/JS tanpa server, jadwal yang kamu ajukan di sini tersimpan di browser-mu sendiri dan belum benar-benar terkirim ke Guru BK. Tombol "🔧 (Demo) Tandai Disetujui" di bawah cuma untuk menunjukkan bagaimana tampilan status berubah.
+      </div>
+
+      <div class="grid grid-3" id="teacherCatalog">
+        <div class="card teacher-card">
+          <div class="teacher-top">
+            <div class="avatar" style="background:var(--color-coral);">BR</div>
+            <div>
+              <h3 style="margin:0; font-size:1rem;">Bu Rina, S.Pd.</h3>
+              <p style="margin:0; font-size:0.85rem; color:var(--color-ink-soft);">Pendengar setia soal pertemanan</p>
+            </div>
+          </div>
+          <div class="teacher-tags">
+            <span class="tag">Pertemanan</span>
+            <span class="tag">Keluarga</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--color-ink-soft);">"Aku suka ngobrol santai dulu sebelum masuk ke inti masalah. Nggak akan buru-buru menghakimi."</p>
+          <button class="btn btn-secondary btn-sm pilih-guru-btn" data-teacher="Bu Rina, S.Pd.">Pilih & Booking</button>
+        </div>
+
+        <div class="card teacher-card">
+          <div class="teacher-top">
+            <div class="avatar" style="background:var(--color-teal);">PD</div>
+            <div>
+              <h3 style="margin:0; font-size:1rem;">Pak Dedi, M.Pd.</h3>
+              <p style="margin:0; font-size:0.85rem; color:var(--color-ink-soft);">Asik diajak ngobrol soal karir & kuliah</p>
+            </div>
+          </div>
+          <div class="teacher-tags">
+            <span class="tag">Karir</span>
+            <span class="tag">Belajar</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--color-ink-soft);">"Bingung mau lanjut ke mana setelah lulus? Yuk kita petakan bareng-bareng, nggak perlu terburu-buru."</p>
+          <button class="btn btn-secondary btn-sm pilih-guru-btn" data-teacher="Pak Dedi, M.Pd.">Pilih & Booking</button>
+        </div>
+
+        <div class="card teacher-card">
+          <div class="teacher-top">
+            <div class="avatar" style="background:var(--color-gold);">SW</div>
+            <div>
+              <h3 style="margin:0; font-size:1rem;">Bu Sari, M.Psi.</h3>
+              <p style="margin:0; font-size:0.85rem; color:var(--color-ink-soft);">Fokus kesehatan mental & manajemen stres</p>
+            </div>
+          </div>
+          <div class="teacher-tags">
+            <span class="tag">Stres & Cemas</span>
+            <span class="tag">Belajar</span>
+          </div>
+          <p style="font-size:0.88rem; color:var(--color-ink-soft);">"Kalau lagi ngerasa overwhelmed sama tugas atau ujian, cerita aja — kita cari cara yang paling ringan buat kamu."</p>
+          <button class="btn btn-secondary btn-sm pilih-guru-btn" data-teacher="Bu Sari, M.Psi.">Pilih & Booking</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container" style="max-width:640px;">
+      <h2 style="font-size:1.5rem;">Atur Jadwal Konsultasi</h2>
+      <form id="bookingForm" class="card">
+        <div class="field">
+          <label for="bookingTeacher">Pilih Guru BK</label>
+          <select id="bookingTeacher" name="bookingTeacher" required>
+            <option value="">— Pilih salah satu —</option>
+            <option value="Bu Rina, S.Pd.">Bu Rina, S.Pd. — Pertemanan & Keluarga</option>
+            <option value="Pak Dedi, M.Pd.">Pak Dedi, M.Pd. — Karir & Belajar</option>
+            <option value="Bu Sari, M.Psi.">Bu Sari, M.Psi. — Stres & Cemas</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="bookingMode">Mode Konsultasi</label>
+          <select id="bookingMode" name="bookingMode" required>
+            <option value="">— Pilih salah satu —</option>
+            <option value="Online — Chat">Online — Chat</option>
+            <option value="Online — Video Call">Online — Video Call</option>
+            <option value="Offline — Ruang BK">Offline — Ruang BK</option>
+          </select>
+        </div>
+        <div class="grid grid-2">
+          <div class="field">
+            <label for="bookingDate">Tanggal</label>
+            <input type="date" id="bookingDate" name="bookingDate" required>
+          </div>
+          <div class="field">
+            <label for="bookingTime">Jam</label>
+            <select id="bookingTime" name="bookingTime" required>
+              <option value="">— Pilih jam —</option>
+              <option>08:00</option>
+              <option>09:00</option>
+              <option>10:00</option>
+              <option>11:00</option>
+              <option>13:00</option>
+              <option>14:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="bookingNote">Catatan singkat (opsional)</label>
+          <textarea id="bookingNote" name="bookingNote" placeholder="Boleh cerita sedikit apa yang mau kamu bahas, biar Guru BK bisa siap-siap."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Ajukan Jadwal</button>
+      </form>
+
+      <h2 style="font-size:1.3rem; margin-top:36px;">Jadwal Konsultasimu</h2>
+      <div id="bookingList"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> — belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+
+    <a class="crisis-contact" href="tel:119">
+      <strong>☎️ Hotline Sejiwa — 119 ext. 8</strong>
+      <span>Layanan Kementerian Kesehatan RI, gratis & rahasia, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener">
+      <strong>💬 WhatsApp Healing119</strong>
+      <span>+62 813-8007-3120 — chat dengan konselor, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="#">
+      <strong>🏫 Kontak Darurat Sekolah</strong>
+      <span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span>
+    </a>
+
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

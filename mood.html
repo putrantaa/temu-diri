@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mood Tracker — BK Sahabat</title>
+<meta name="description" content="Catat mood harianmu dan lihat pola perasaanmu dari waktu ke waktu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">BK</span>
+      BK Sahabat
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="mood.html" aria-current="page">Mood Tracker</a></li>
+      <li><a href="konsultasi.html">Konsultasi</a></li>
+      <li><a href="jurnal.html">Jurnal & Curhat</a></li>
+      <li><a href="literasi.html">Literasi Mental</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section">
+    <div class="container" style="max-width:760px;">
+      <span class="eyebrow">Check-in harian</span>
+      <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">Gimana perasaanmu hari ini?</h1>
+      <p style="color:var(--color-ink-soft);">Nggak ada jawaban yang salah. Ini cuma buat kamu sendiri lihat pola perasaanmu — tapi kalau kamu izinkan, ini juga bisa bantu Guru BK lebih peka kapan harus menyapa duluan.</p>
+
+      <div class="mood-picker" id="moodPicker" role="group" aria-label="Pilih mood hari ini">
+        <button class="mood-option" style="--mood-opt:var(--mood-1);" data-value="1" aria-pressed="false">
+          <span class="emoji">😢</span><span class="label">Sangat Sedih</span>
+        </button>
+        <button class="mood-option" style="--mood-opt:var(--mood-2);" data-value="2" aria-pressed="false">
+          <span class="emoji">😟</span><span class="label">Cemas</span>
+        </button>
+        <button class="mood-option" style="--mood-opt:var(--mood-3);" data-value="3" aria-pressed="false">
+          <span class="emoji">😐</span><span class="label">Biasa Saja</span>
+        </button>
+        <button class="mood-option" style="--mood-opt:var(--mood-4);" data-value="4" aria-pressed="false">
+          <span class="emoji">🙂</span><span class="label">Senang</span>
+        </button>
+        <button class="mood-option" style="--mood-opt:var(--mood-5);" data-value="5" aria-pressed="false">
+          <span class="emoji">🤩</span><span class="label">Bersemangat</span>
+        </button>
+      </div>
+
+      <p id="moodSavedNotice" class="notice" style="display:none;"></p>
+
+      <div class="card" id="moodStreakNotice" style="display:none; border-left:5px solid var(--color-danger);">
+        <h3 style="margin-bottom:6px;">Kamu sepertinya sedang tidak baik-baik saja akhir-akhir ini 💛</h3>
+        <p style="color:var(--color-ink-soft); margin-bottom:14px;">Beberapa hari terakhir mood-mu kelihatan berat. Mau ngobrol sama Bapak/Ibu Guru BK?</p>
+        <a class="btn btn-primary btn-sm" href="konsultasi.html">Booking Konsultasi</a>
+        <a class="btn btn-secondary btn-sm" href="jurnal.html">Curhat Dulu Aja</a>
+      </div>
+
+      <div class="card" style="margin-top:32px;">
+        <h3>Riwayat 30 Hari Terakhir</h3>
+        <div class="mood-history-grid" id="moodHistoryGrid"></div>
+        <div class="legend">
+          <span><span class="legend-dot" style="background:var(--mood-1);"></span>Sangat sedih</span>
+          <span><span class="legend-dot" style="background:var(--mood-2);"></span>Cemas</span>
+          <span><span class="legend-dot" style="background:var(--mood-3);"></span>Biasa saja</span>
+          <span><span class="legend-dot" style="background:var(--mood-4);"></span>Senang</span>
+          <span><span class="legend-dot" style="background:var(--mood-5);"></span>Bersemangat</span>
+          <span><span class="legend-dot" style="background:var(--color-bg-alt); border:1px solid var(--color-line);"></span>Belum diisi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> — belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+
+    <a class="crisis-contact" href="tel:119">
+      <strong>☎️ Hotline Sejiwa — 119 ext. 8</strong>
+      <span>Layanan Kementerian Kesehatan RI, gratis & rahasia, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener">
+      <strong>💬 WhatsApp Healing119</strong>
+      <span>+62 813-8007-3120 — chat dengan konselor, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="#">
+      <strong>🏫 Kontak Darurat Sekolah</strong>
+      <span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span>
+    </a>
+
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

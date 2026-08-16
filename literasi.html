@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pojok Literasi Mental — BK Sahabat</title>
+<meta name="description" content="Artikel ringan dan kuis gaya belajar seputar kesehatan mental siswa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">BK</span>
+      BK Sahabat
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="mood.html">Mood Tracker</a></li>
+      <li><a href="konsultasi.html">Konsultasi</a></li>
+      <li><a href="jurnal.html">Jurnal & Curhat</a></li>
+      <li><a href="literasi.html" aria-current="page">Literasi Mental</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Pojok Literasi Mental</span>
+      <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:22ch;">Kadang kamu cuma butuh info, bukan sesi konseling.</h1>
+      <p style="color:var(--color-ink-soft); max-width:60ch;">Beberapa hal ringan yang mungkin bisa membantumu memahami apa yang sedang kamu rasakan.</p>
+
+      <div class="grid grid-3" style="margin-top:32px;">
+        <article class="card article-card">
+          <span class="article-tag">Belajar</span>
+          <h3>Mengatasi Burnout Belajar</h3>
+          <p style="color:var(--color-ink-soft); font-size:0.9rem;">Kalau belakangan ini kamu ngerasa capek banget walau belum ngapa-ngapain, itu bisa jadi tanda burnout. Coba mulai dari hal kecil: kasih jeda 5–10 menit tiap 45 menit belajar, dan jangan ragu bilang ke orang terdekat kalau kamu lagi kewalahan. Burnout bukan tanda kamu malas — itu tanda kamu butuh istirahat yang sebenarnya, bukan cuma tidur.</p>
+        </article>
+        <article class="card article-card">
+          <span class="article-tag">Ujian</span>
+          <h3>Menghadapi Ujian Tanpa Anxiety Berlebih</h3>
+          <p style="color:var(--color-ink-soft); font-size:0.9rem;">Deg-degan sebelum ujian itu wajar. Yang bisa dilatih adalah cara meresponsnya: siapkan materi jauh-jauh hari biar nggak sistem kebut semalam, latihan napas pelan 4 hitungan masuk—4 hitungan keluar sebelum masuk ruang ujian, dan ingatkan diri bahwa satu nilai ujian nggak menentukan seluruh masa depanmu.</p>
+        </article>
+        <article class="card article-card">
+          <span class="article-tag">Pertemanan</span>
+          <h3>Mengenali Toxic Friendship</h3>
+          <p style="color:var(--color-ink-soft); font-size:0.9rem;">Pertemanan yang sehat itu bikin kamu merasa nyaman jadi diri sendiri. Kalau kamu terus-menerus merasa cemas, direndahkan, atau harus selalu mengalah demi dianggap "temannya", itu tanda hubungan itu mungkin nggak sehat. Kamu berhak punya circle yang bikin kamu merasa aman, bukan yang bikin kamu kecil.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container" style="max-width:640px;">
+      <span class="eyebrow">Tes ringan</span>
+      <h2 style="font-size:1.5rem;">Tes Gaya Belajar</h2>
+      <p style="color:var(--color-ink-soft);">Jawab 5 pertanyaan ini untuk kira-kira tahu gaya belajar yang paling cocok buat kamu.</p>
+
+      <div class="card" id="learningQuiz">
+        <div class="quiz-question">
+          <p class="q-text">1. Waktu belajar materi baru, kamu paling gampang paham kalau...</p>
+          <div class="quiz-options">
+            <button type="button" class="quiz-option" data-type="visual" aria-pressed="false">Lihat diagram, peta konsep, atau video</button>
+            <button type="button" class="quiz-option" data-type="auditori" aria-pressed="false">Dengar penjelasan guru atau diskusi</button>
+            <button type="button" class="quiz-option" data-type="kinestetik" aria-pressed="false">Langsung coba praktik atau simulasi</button>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p class="q-text">2. Saat menghafal, kamu biasanya...</p>
+          <div class="quiz-options">
+            <button type="button" class="quiz-option" data-type="visual" aria-pressed="false">Bikin catatan berwarna-warni / mind map</button>
+            <button type="button" class="quiz-option" data-type="auditori" aria-pressed="false">Membaca dengan suara keras / rekam suara</button>
+            <button type="button" class="quiz-option" data-type="kinestetik" aria-pressed="false">Jalan-jalan sambil menghafal, atau pakai gerakan tangan</button>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p class="q-text">3. Kalau tersesat di tempat baru, kamu lebih suka...</p>
+          <div class="quiz-options">
+            <button type="button" class="quiz-option" data-type="visual" aria-pressed="false">Lihat peta</button>
+            <button type="button" class="quiz-option" data-type="auditori" aria-pressed="false">Tanya orang dan dengar arahannya</button>
+            <button type="button" class="quiz-option" data-type="kinestetik" aria-pressed="false">Jalan dulu, sambil merasakan arahnya</button>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p class="q-text">4. Waktu presentasi kelompok, kamu paling nyaman...</p>
+          <div class="quiz-options">
+            <button type="button" class="quiz-option" data-type="visual" aria-pressed="false">Bikin slide dan visual pendukung</button>
+            <button type="button" class="quiz-option" data-type="auditori" aria-pressed="false">Jadi yang menjelaskan dengan kata-kata</button>
+            <button type="button" class="quiz-option" data-type="kinestetik" aria-pressed="false">Bikin alat peraga atau demo langsung</button>
+          </div>
+        </div>
+        <div class="quiz-question">
+          <p class="q-text">5. Kalau lagi stres, cara paling ampuh buat kamu rileks adalah...</p>
+          <div class="quiz-options">
+            <button type="button" class="quiz-option" data-type="visual" aria-pressed="false">Nonton sesuatu yang enak dilihat</button>
+            <button type="button" class="quiz-option" data-type="auditori" aria-pressed="false">Dengar musik atau curhat sama seseorang</button>
+            <button type="button" class="quiz-option" data-type="kinestetik" aria-pressed="false">Gerak badan — jalan kaki, olahraga ringan</button>
+          </div>
+        </div>
+
+        <p id="quizResult" class="quiz-result"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> — belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+
+    <a class="crisis-contact" href="tel:119">
+      <strong>☎️ Hotline Sejiwa — 119 ext. 8</strong>
+      <span>Layanan Kementerian Kesehatan RI, gratis & rahasia, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener">
+      <strong>💬 WhatsApp Healing119</strong>
+      <span>+62 813-8007-3120 — chat dengan konselor, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="#">
+      <strong>🏫 Kontak Darurat Sekolah</strong>
+      <span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span>
+    </a>
+
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

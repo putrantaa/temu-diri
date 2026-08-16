@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurnal & Curhat — BK Sahabat</title>
+<meta name="description" content="Tulis di buku harian pribadi atau kirim surat kaleng anonim.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">BK</span>
+      BK Sahabat
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="mood.html">Mood Tracker</a></li>
+      <li><a href="konsultasi.html">Konsultasi</a></li>
+      <li><a href="jurnal.html" aria-current="page">Jurnal & Curhat</a></li>
+      <li><a href="literasi.html">Literasi Mental</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section">
+    <div class="container" style="max-width:700px;">
+      <span class="eyebrow">Sekadar meluapkan perasaan</span>
+      <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">Nggak semua cerita butuh balasan. Kadang cuma butuh ditulis.</h1>
+      <p style="color:var(--color-ink-soft);">Pilih mau nulis untuk diri sendiri, atau kirim ke Guru BK tanpa nama.</p>
+
+      <div class="notice">
+        <strong>Catatan versi contoh:</strong> di situs prototipe ini, jurnal & surat kaleng hanya tersimpan di browser perangkatmu sendiri — belum benar-benar terkirim ke Guru BK. Supaya "Surat Kaleng" beneran sampai ke Guru BK, bagian ini perlu disambungkan ke sebuah backend/database sekolah (lihat README).
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-btn" role="tab" data-tab="tabDiary" aria-selected="true">📔 Buku Harian Rahasia</button>
+        <button class="tab-btn" role="tab" data-tab="tabSurat" aria-selected="false">📮 Surat Kaleng (Anonim)</button>
+      </div>
+
+      <!-- ==== TAB: BUKU HARIAN ==== -->
+      <div class="tab-panel active" id="tabDiary" role="tabpanel">
+        <p style="color:var(--color-ink-soft); font-size:0.92rem;">Hanya kamu yang bisa membaca tulisan ini. Tempat aman untuk melepas apa pun yang sedang kamu rasakan.</p>
+        <form id="diaryForm" class="card">
+          <div class="field">
+            <label for="diaryText" class="sr-only">Tulisan jurnal</label>
+            <textarea id="diaryText" name="diaryText" placeholder="Hari ini aku ngerasa..." required></textarea>
+          </div>
+          <label class="checkbox-row" style="margin-bottom:16px;">
+            <input type="checkbox" id="diarySelfDestruct" name="diarySelfDestruct">
+            Hapus otomatis setelah 24 jam (buat yang cuma mau lega sesaat, tanpa jejak)
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">Simpan Tulisan</button>
+        </form>
+        <div id="diaryList" class="entry-list"></div>
+      </div>
+
+      <!-- ==== TAB: SURAT KALENG ==== -->
+      <div class="tab-panel" id="tabSurat" role="tabpanel">
+        <p style="color:var(--color-ink-soft); font-size:0.92rem;">Cerita tanpa perlu menyebutkan nama. Cocok kalau kamu masih malu, takut, atau sedang mengalami perundungan tapi belum berani lapor langsung.</p>
+        <form id="suratForm" class="card">
+          <div class="field">
+            <label for="suratText" class="sr-only">Isi surat kaleng</label>
+            <textarea id="suratText" name="suratText" placeholder="Tulis apa pun yang ingin kamu sampaikan ke Guru BK, tanpa perlu menyebut namamu..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Kirim Anonim</button>
+          <p id="suratConfirm" class="notice" style="display:none; margin:16px 0 0;"></p>
+        </form>
+        <p style="color:var(--color-ink-faint); font-size:0.85rem; margin-top:14px;">📮 <span id="suratCount">0</span> surat tersimpan di perangkat ini (demo).</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> — belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+
+    <a class="crisis-contact" href="tel:119">
+      <strong>☎️ Hotline Sejiwa — 119 ext. 8</strong>
+      <span>Layanan Kementerian Kesehatan RI, gratis & rahasia, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener">
+      <strong>💬 WhatsApp Healing119</strong>
+      <span>+62 813-8007-3120 — chat dengan konselor, aktif 24 jam.</span>
+    </a>
+    <a class="crisis-contact" href="#">
+      <strong>🏫 Kontak Darurat Sekolah</strong>
+      <span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span>
+    </a>
+
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
