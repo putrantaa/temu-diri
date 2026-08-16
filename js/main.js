@@ -46,6 +46,7 @@ const BK = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
   initNav();
   initFaq();
   initConsentModal();
@@ -57,6 +58,59 @@ document.addEventListener('DOMContentLoaded', () => {
   initSuratKaleng();
   initQuiz();
 });
+
+/* ---------------------------------------------------------
+   AUTH (MOCK)
+--------------------------------------------------------- */
+function initAuth() {
+  const path = window.location.pathname;
+  const isAuthPage = path.endsWith('login.html') || path.endsWith('register.html');
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  if (!isLoggedIn && !isAuthPage) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Update Navbar
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach(link => {
+    if (link.textContent.trim() === 'Masuk' || link.textContent.trim() === 'Keluar') {
+      if (isLoggedIn) {
+        link.textContent = 'Keluar';
+        link.href = '#';
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.removeItem('isLoggedIn');
+          window.location.href = 'login.html';
+        });
+      } else {
+        link.textContent = 'Masuk';
+        link.href = 'login.html';
+      }
+    }
+  });
+
+  // Login Form
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      localStorage.setItem('isLoggedIn', 'true');
+      window.location.href = 'index.html';
+    });
+  }
+
+  // Register Form
+  const registerForm = document.getElementById('registerForm');
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      localStorage.setItem('isLoggedIn', 'true');
+      window.location.href = 'index.html';
+    });
+  }
+}
 
 /* ---------------------------------------------------------
    NAVBAR (hamburger untuk mobile)
