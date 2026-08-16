@@ -522,7 +522,7 @@ select:focus-visible {
 .field label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
 .field .hint { font-size: 0.8rem; color: var(--color-ink-faint); margin-top: 4px; }
 
-textarea, input[type="date"], input[type="text"], select {
+textarea, input[type="date"], input[type="text"], input[type="email"], input[type="password"], select {
   width: 100%;
   font-family: var(--font-body);
   font-size: 0.95rem;
