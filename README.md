@@ -1,86 +1,52 @@
-# BK Sahabat — Prototipe Website Bimbingan Konseling
+# Temu Diri - Prototipe Website Bimbingan Konseling
 
-Website statis (HTML, CSS, JavaScript murni — tanpa framework/build tool) untuk platform BK sekolah, dibuat berdasarkan brief: edukasi BK, mood tracker harian, booking konsultasi, jurnal pribadi & surat kaleng anonim, pojok literasi mental, dan tombol darurat.
+Website statis (HTML, CSS, JavaScript murni - tanpa framework/build tool) untuk platform BK sekolah. Proyek ini merupakan pembaruan dan rebranding dari "BK Sahabat" menjadi **Temu Diri**, dengan tampilan visual bernuansa biru yang menenangkan.
 
-## Struktur folder
+## Fitur Utama
+1. **Sistem Role (Mock Auth):** Terdapat dua role pengguna (Siswa & Guru BK) dengan hak akses, navbar, dan halaman profil yang berbeda.
+2. **Mood Tracker Harian:** Siswa wajib mengisi mood harian (disertai nama) setelah login, dengan sistem riwayat 30 hari.
+3. **Booking Konsultasi:** Katalog Guru BK dan form booking interaktif (Siswa mengajukan, Guru BK menyetujui).
+4. **Jurnal & Curhat:** Buku harian rahasia (opsi hapus otomatis 24 jam) & Surat Kaleng anonim. Siswa kini bisa melihat riwayat surat kaleng yang dikirim dan bisa menghapusnya (batal kirim).
+5. **Dashboard Guru BK:** Panel admin khusus untuk memantau mood siswa secara keseluruhan, menyetujui jadwal konsultasi, dan membaca surat kaleng masuk.
+6. **Tombol Darurat (Crisis Button):** Akses cepat ke kontak bantuan krisis dari halaman mana saja.
 
-```
+## Struktur Folder
+
+```text
 bk-website/
-├── index.html        (Beranda: edukasi BK, topik bantuan, FAQ)
-├── mood.html          (Mood tracker harian + riwayat 30 hari)
-├── konsultasi.html    (Katalog Guru BK + form booking)
-├── jurnal.html        (Buku harian rahasia + surat kaleng anonim)
-├── literasi.html      (Artikel ringan + kuis gaya belajar)
+├── index.html           (Beranda: edukasi BK, penjelasan fitur utama, FAQ)
+├── login.html           (Halaman masuk untuk Siswa & Guru)
+├── profil.html          (Profil pengguna dinamis & statistik)
+├── dashboard-guru.html  (Panel admin khusus Guru BK)
+├── mood.html            (Mood tracker harian & riwayat)
+├── konsultasi.html      (Katalog Guru BK + form pengajuan booking)
+├── jurnal.html          (Buku harian rahasia + form surat kaleng)
+├── literasi.html        (Artikel literasi mental + kuis gaya belajar)
 ├── css/style.css
 ├── js/main.js
 └── README.md
 ```
 
-## ⚠️ Batasan penting (baca sebelum dipakai di sekolah sungguhan)
+## ⚠️ Batasan Penting (Prototipe Frontend)
 
-Ini adalah **frontend murni** — tidak ada server/database. Semua data (mood, jurnal, surat kaleng, jadwal booking) disimpan dengan `localStorage`, artinya:
+Ini adalah **prototipe frontend murni** - tidak menggunakan *server* atau *database* online. Semua data disimpan secara lokal menggunakan `localStorage` di memori browser. 
 
-- Data **hanya tersimpan di browser masing-masing perangkat**, tidak sinkron antar perangkat, dan hilang kalau cache browser dibersihkan.
-- **"Surat Kaleng" belum benar-benar terkirim ke Guru BK** — psikologis prosesnya adalah menyimpan datanya secara lokal saja di HP/laptop siswa itu sendiri. Guru BK tidak menerima notifikasi apa pun.
-- Login siswa/dashboard Guru BK sungguhan **belum ada** di versi ini.
-- Notifikasi WhatsApp/Email otomatis **belum ada** (butuh backend + API pihak ketiga).
+- **Data tidak tersinkronisasi antar perangkat.** Data yang dimasukkan siswa di laptop/HP mereka **tidak** akan muncul di laptop Guru BK sungguhan.
+- **Cara Menguji Fitur (Demo):** Agar Guru BK bisa merespons data dari siswa (menyetujui booking atau membaca surat), pengujian **wajib dilakukan di satu browser yang sama**. 
+  *(Alur pengujian: Login sebagai Siswa -> ajukan konsultasi/isi mood -> Logout -> Login sebagai Guru BK -> cek Dashboard).*
+- **Data Login Default:**
+  - **Siswa:** Username: `siswa01` | Password: `siswa123`
+  - **Guru BK:** Username: `gurubk` | Password: `bk2024`
 
-Karena data curhat siswa itu sensitif, **jangan gunakan versi ini untuk menyimpan curhatan siswa sungguhan** sampai ditambahkan backend yang aman (server + database dengan autentikasi & enkripsi, bukan disimpan di repo GitHub publik). Anggap versi ini sebagai **prototipe/demo tampilan & alur (UI/UX)** untuk didiskusikan dengan pihak sekolah, bukan produk jadi.
+Untuk menjadikannya produk sungguhan yang dipakai resmi oleh sekolah, kode *frontend* ini perlu disambungkan ke *backend/database* (seperti Firebase, Supabase, MySQL, dll).
 
-Untuk menjadikannya produk sungguhan, langkah selanjutnya biasanya:
-1. Tambah backend (mis. Firebase, Supabase, atau server Node.js/Express + database) untuk menyimpan data dengan aman.
-2. Tambah sistem login siswa (NISN) & login Guru BK yang terautentikasi.
-3. Pindahkan repo/hosting ke tempat yang mendukung privasi data siswa (GitHub Pages publik **tidak cocok** untuk data sensitif sungguhan).
+## Menjalankan secara Lokal di Komputer
 
-## Menjalankan di komputer (sebelum di-deploy)
+Karena `js/main.js` mengandalkan `localStorage` dan pengelolaan halaman berbasis rute sederhana, jangan hanya klik ganda (double-click) file `index.html`. Sangat disarankan untuk menjalankannya menggunakan ekstensi **Live Server** di VS Code agar seluruh fitur berfungsi tanpa terblokir oleh keamanan browser.
 
-Karena `js/main.js` memakai `localStorage` dan file dibuka lewat `http://`, sebaiknya jangan cuma double-click `index.html`. Gunakan **Live Server** di VS Code (lihat langkah di bawah) supaya semua fitur berjalan normal.
+## Penyesuaian untuk Sekolah
 
-## Langkah Deploy ke GitHub Pages (pakai VS Code)
-
-1. **Siapkan folder proyek**
-   Ekstrak/salin folder `bk-website` ini ke komputer, lalu buka foldernya di VS Code (`File > Open Folder...`).
-
-2. **Coba dulu secara lokal**
-   Install ekstensi **Live Server** (oleh Ritwick Dey) dari tab Extensions VS Code. Klik kanan `index.html` → **Open with Live Server**. Situs akan terbuka di `http://127.0.0.1:5500` dan semua fitur (mood tracker, jurnal, dll) bisa dicoba.
-
-3. **Buat repository di GitHub**
-   Buka [github.com](https://github.com) → tombol **New repository** → beri nama (misal `bk-sahabat`) → pilih **Public** → **Create repository**. Jangan centang "Add a README" kalau sudah punya README sendiri.
-
-4. **Push proyek dari VS Code ke GitHub**
-   Buka **Terminal** di VS Code (`Terminal > New Terminal`), lalu jalankan perintah ini satu per satu di dalam folder `bk-website`:
-   ```bash
-   git init
-   git add .
-   git commit -m "Inisialisasi website BK Sahabat"
-   git branch -M main
-   git remote add origin https://github.com/USERNAME-KAMU/bk-sahabat.git
-   git push -u origin main
-   ```
-   Ganti `USERNAME-KAMU/bk-sahabat` dengan alamat repo yang baru kamu buat di langkah 3 (bisa disalin dari tombol hijau **Code** di halaman GitHub repo-mu). Kalau diminta login, ikuti proses autentikasi GitHub di browser/VS Code.
-
-   *Tips: kalau di VS Code sudah ada ikon "Source Control" (ikon cabang di sidebar kiri), kamu juga bisa klik ikon itu → **Publish Branch** sebagai alternatif dari perintah git manual di atas.*
-
-5. **Aktifkan GitHub Pages**
-   Di halaman repo GitHub → **Settings** → menu **Pages** (di sidebar kiri) → pada bagian **Build and deployment**, pilih **Source: Deploy from a branch** → pilih **Branch: main** dan folder **/ (root)** → **Save**.
-
-6. **Tunggu 1–2 menit**, lalu refresh halaman Settings > Pages. Akan muncul link seperti:
-   ```
-   https://USERNAME-KAMU.github.io/bk-sahabat/
-   ```
-   Itulah alamat website BK Sahabat yang sudah live dan bisa dibuka siapa saja.
-
-7. **Update website di kemudian hari**
-   Setiap kali mengubah file di VS Code, jalankan lagi:
-   ```bash
-   git add .
-   git commit -m "Deskripsi perubahan"
-   git push
-   ```
-   GitHub Pages akan otomatis memperbarui situs dalam 1–2 menit.
-
-## Mengganti hal-hal yang perlu disesuaikan sekolah
-
-- **Kontak darurat sekolah**: cari `Kontak Darurat Sekolah` di tiap file `.html` (bagian modal tombol darurat) dan ganti `href="#"` serta teksnya dengan nomor/kontak Guru BK atau wali kelas sekolahmu.
-- **Nama & data Guru BK**: edit bagian `#teacherCatalog` di `konsultasi.html` dan `<select id="bookingTeacher">` di form booking.
-- **Warna & font**: semua ada di `css/style.css` bagian `:root` paling atas (variabel `--color-...` dan `--font-...`).
+- **Kontak Darurat:** Cari elemen dengan kelas `.crisis-contact` di file HTML (pada bagian *modal* darurat) dan ubah nomornya ke nomor Hotline atau Guru BK sekolahmu.
+- **Data Simulasi Pengguna:** Edit variabel `BK_USERS` di bagian atas file `js/main.js` untuk mengganti detail nama, NISN/NIP, kelas, dan avatar bawaan.
+- **Katalog Guru BK:** Sesuaikan data dan keahlian guru pada bagian `#teacherCatalog` di file `konsultasi.html`.
+- **Warna Dasar:** Semua variabel warna utama sekarang dipusatkan di `css/style.css` pada blok `:root` (khususnya warna biru pada `--color-coral` dan turunannya).
