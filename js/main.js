@@ -212,6 +212,15 @@ function updateNavbar(currentUser, isMoodPage) {
     return;
   }
 
+  // Khusus Guru: bersihkan menu statis siswa, ganti jadi menu guru
+  if (currentUser.role === 'guru') {
+    navLinks.innerHTML = '';
+    const onDashboard = window.location.pathname.endsWith('dashboard-guru.html');
+    const dashLi = document.createElement('li');
+    dashLi.innerHTML = `<a href="dashboard-guru.html" ${onDashboard ? 'aria-current="page"' : ''}>Dashboard</a>`;
+    navLinks.appendChild(dashLi);
+  }
+
   // Blokir navigasi di mood.html jika mood belum diisi
   if (currentUser.role === 'siswa' && isMoodPage) {
     navLinks.querySelectorAll('a').forEach((link) => {
@@ -532,14 +541,7 @@ function initBooking() {
   });
 
   list.addEventListener('click', (e) => {
-    const approveBtn = e.target.closest('[data-approve]');
     const cancelBtn = e.target.closest('[data-cancel]');
-    if (approveBtn) {
-      const id = approveBtn.dataset.approve;
-      bookings = bookings.map((b) => (b.id === id ? { ...b, status: 'Disetujui' } : b));
-      BK.save(BK.keys.bookings, bookings);
-      render();
-    }
     if (cancelBtn) {
       const id = cancelBtn.dataset.cancel;
       bookings = bookings.filter((b) => b.id !== id);
@@ -572,8 +574,7 @@ function initBooking() {
         <p style="margin:0 0 4px;"><strong>${b.teacher}</strong> · ${b.mode}</p>
         ${b.note ? `<p style="color:var(--color-ink-soft); font-size:0.9rem;">"${escapeHtml(b.note)}"</p>` : ''}
         <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
-          ${b.status !== 'Disetujui' ? `<button class="btn btn-secondary btn-sm" data-approve="${b.id}">🔧 (Demo) Tandai Disetujui</button>` : ''}
-          <button class="btn btn-ghost btn-sm" data-cancel="${b.id}">Batalkan</button>
+          <button class="btn btn-ghost btn-sm" data-cancel="${b.id}">Batalkan Pengajuan</button>
         </div>
       </div>`
       )
@@ -866,7 +867,7 @@ function initGuruDashboard() {
       <p style="margin:6px 0 2px;"><strong>${b.teacher}</strong> · ${b.mode}</p>
       ${b.note ? `<p class="guru-note">"${escapeHtml(b.note)}"</p>` : ''}
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-        ${b.status !== 'Disetujui' ? `<button class="btn btn-primary btn-sm" data-approve="${b.id}">✅ Setujui</button>` : '<span style="color:var(--color-teal-dark);font-size:0.85rem;font-weight:700;">✅ Sudah disetujui</span>'}
+        ${b.status !== 'Disetujui' ? `<button class="btn btn-primary btn-sm" data-approve="${b.id}">Setujui</button>` : '<span style="color:var(--color-teal-dark);font-size:0.85rem;font-weight:700;">✅ Sudah disetujui</span>'}
         <button class="btn btn-ghost btn-sm" data-cancel="${b.id}">Batalkan</button>
       </div>
     </div>`).join('');
