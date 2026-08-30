@@ -1,5 +1,5 @@
 /* =========================================================
-   BK SAHABAT — main.js
+   TEMU DIRI — main.js
    Semua data (mood, jurnal, surat kaleng, booking) disimpan
    di localStorage browser. INI PROTOTIPE FRONTEND SAJA:
    tidak ada server, jadi data tidak benar-benar terkirim ke
@@ -14,6 +14,7 @@ const BK = {
     bookings: 'bk_bookings',
     diary: 'bk_diary',
     surat: 'bk_surat',
+    currentUser: 'bk_current_user',
   },
 
   load(key, fallback) {
@@ -43,6 +44,42 @@ const BK = {
   uid() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   },
+  getCurrentUser() {
+    return this.load(this.keys.currentUser, null);
+  },
+  saveCurrentUser(user) {
+    this.save(this.keys.currentUser, user);
+  },
+  clearCurrentUser() {
+    try { localStorage.removeItem(this.keys.currentUser); } catch (e) {}
+    try { localStorage.removeItem('isLoggedIn'); } catch (e) {}
+  },
+};
+
+/* ---------------------------------------------------------
+   KREDENSIAL HARDCODED
+   Siswa  : username=siswa01   password=siswa123
+   Guru BK: username=gurubk    password=bk2024
+--------------------------------------------------------- */
+const BK_USERS = {
+  siswa01: {
+    password: 'siswa123',
+    role: 'siswa',
+    name: 'Putranta Wisnu Wardhana',
+    kelas: 'XII IPA 2',
+    nisn: '0051234567',
+    avatar: 'PW',
+    email: 'putranta.wardhana@siswa.sch.id',
+  },
+  gurubk: {
+    password: 'bk2024',
+    role: 'guru',
+    name: 'Bu Alda, S.Pd.',
+    nip: '198501012010012001',
+    spesialisasi: 'Pertemanan & Keluarga',
+    avatar: 'BR',
+    email: 'alda.bk@sekolah.sch.id',
+  },
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,59 +94,162 @@ document.addEventListener('DOMContentLoaded', () => {
   initDiary();
   initSuratKaleng();
   initQuiz();
+  initHelpModal();
+  initGuruDashboard();
+  initProfil();
 });
 
 /* ---------------------------------------------------------
-   AUTH (MOCK)
+   AUTH (ROLE-BASED)
 --------------------------------------------------------- */
 function initAuth() {
   const path = window.location.pathname;
-  const isAuthPage = path.endsWith('login.html') || path.endsWith('register.html');
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isAuthPage   = path.endsWith('login.html') || path.endsWith('register.html');
+  const isMoodPage   = path.endsWith('mood.html');
+  const isGuruPage   = path.endsWith('dashboard-guru.html');
+  const isProfilPage = path.endsWith('profil.html');
 
+  const currentUser = BK.getCurrentUser();
+  const isLoggedIn  = !!currentUser;
+
+  function isMoodFilledToday() {
+    return BK.load(BK.keys.mood, []).some((h) => h.date === BK.todayStr());
+  }
+
+  // Belum login → ke halaman login
   if (!isLoggedIn && !isAuthPage) {
     window.location.href = 'login.html';
     return;
   }
 
-  // Update Navbar
-  const navLinks = document.querySelectorAll('.nav-links a');
-  navLinks.forEach(link => {
-    if (link.textContent.trim() === 'Masuk' || link.textContent.trim() === 'Keluar') {
-      if (isLoggedIn) {
-        link.textContent = 'Keluar';
-        link.href = '#';
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          localStorage.removeItem('isLoggedIn');
-          window.location.href = 'login.html';
-        });
-      } else {
-        link.textContent = 'Masuk';
-        link.href = 'login.html';
-      }
-    }
-  });
+  // Guru membuka halaman siswa → redirect ke dashboard guru
+  if (isLoggedIn && currentUser.role === 'guru' && !isGuruPage && !isProfilPage && !isAuthPage) {
+    window.location.href = 'dashboard-guru.html';
+    return;
+  }
 
-  // Login Form
+  // Siswa membuka halaman guru → redirect ke mood
+  if (isLoggedIn && currentUser.role === 'siswa' && isGuruPage) {
+    window.location.href = 'mood.html';
+    return;
+  }
+
+  // Siswa belum isi mood hari ini → wajib isi dulu
+  if (isLoggedIn && currentUser.role === 'siswa' && !isAuthPage && !isMoodPage && !isGuruPage && !isMoodFilledToday()) {
+    window.location.href = 'mood.html';
+    return;
+  }
+
+  // Update navbar sesuai user
+  updateNavbar(currentUser, isMoodPage);
+
+  // ---- Login Form ----
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
+    const errorEl = document.getElementById('loginError');
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      localStorage.setItem('isLoggedIn', 'true');
-      window.location.href = 'index.html';
+      const username = (document.getElementById('username').value || '').trim();
+      const password = document.getElementById('password').value || '';
+      const userData = BK_USERS[username];
+
+      if (!userData || userData.password !== password) {
+        if (errorEl) {
+          errorEl.textContent = '❌ Username atau kata sandi salah. Coba lagi.';
+          errorEl.style.display = 'block';
+        }
+        return;
+      }
+
+      // Simpan sesi
+      BK.saveCurrentUser({
+        username,
+        role:        userData.role,
+        name:        userData.name,
+        avatar:      userData.avatar,
+        email:       userData.email      || null,
+        kelas:       userData.kelas      || null,
+        nisn:        userData.nisn       || null,
+        nip:         userData.nip        || null,
+        spesialisasi: userData.spesialisasi || null,
+      });
+
+      window.location.href = userData.role === 'guru' ? 'dashboard-guru.html' : 'mood.html';
     });
   }
 
-  // Register Form
+  // ---- Register Form (dinonaktifkan — sistem hardcoded) ----
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
     registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      localStorage.setItem('isLoggedIn', 'true');
-      window.location.href = 'index.html';
+      const errorEl = document.getElementById('registerError') || document.getElementById('loginError');
+      if (errorEl) {
+        errorEl.innerHTML = 'ℹ️ Sistem menggunakan akun tetap. Gunakan:<br><b>Siswa</b>: siswa01 / siswa123<br><b>Guru BK</b>: gurubk / bk2024';
+        errorEl.style.display = 'block';
+      }
     });
   }
+}
+
+/* ---------------------------------------------------------
+   UPDATE NAVBAR (berdasarkan role)
+--------------------------------------------------------- */
+function updateNavbar(currentUser, isMoodPage) {
+  const navLinks = document.querySelector('.nav-links');
+  if (!navLinks) return;
+
+  // Hapus link Masuk/Keluar lama dari HTML
+  navLinks.querySelectorAll('li').forEach((li) => {
+    const txt = (li.querySelector('a') || {}).textContent || '';
+    if (txt.trim() === 'Masuk' || txt.trim() === 'Keluar') li.remove();
+  });
+
+  if (!currentUser) {
+    const li = document.createElement('li');
+    li.innerHTML = '<a href="login.html">Masuk</a>';
+    navLinks.appendChild(li);
+    return;
+  }
+
+  // Blokir navigasi di mood.html jika mood belum diisi
+  if (currentUser.role === 'siswa' && isMoodPage) {
+    navLinks.querySelectorAll('a').forEach((link) => {
+      const href = link.getAttribute('href') || '';
+      if (!href.includes('mood.html') && !href.includes('profil.html') && href !== '#') {
+        link.addEventListener('click', (e) => {
+          const filled = BK.load(BK.keys.mood, []).some((h) => h.date === BK.todayStr());
+          if (!filled) {
+            e.preventDefault();
+            const warn = document.getElementById('moodBlockedWarning');
+            if (warn) {
+              warn.style.display = 'block';
+              warn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              setTimeout(() => { warn.style.display = 'none'; }, 3500);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // Tambah link Profil (nama depan + avatar)
+  const onProfil = window.location.pathname.endsWith('profil.html');
+  const profilLi = document.createElement('li');
+  profilLi.innerHTML = `<a href="profil.html" ${onProfil ? 'aria-current="page"' : ''} style="display:flex;align-items:center;gap:7px;">
+    <span style="width:26px;height:26px;border-radius:50%;background:${currentUser.role === 'guru' ? 'var(--color-coral)' : 'var(--color-teal)'};color:#fff;font-size:0.72rem;font-weight:700;display:grid;place-items:center;flex-shrink:0;">${currentUser.avatar}</span>
+    ${currentUser.name.split(' ')[0]}
+  </a>`;
+  navLinks.appendChild(profilLi);
+
+  // Event listener untuk tombol keluar (sekarang hanya ada di halaman profil)
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'logoutBtn') {
+      e.preventDefault();
+      BK.clearCurrentUser();
+      window.location.href = 'login.html';
+    }
+  });
 }
 
 /* ---------------------------------------------------------
@@ -191,45 +331,130 @@ function initMoodTracker() {
   const picker = document.getElementById('moodPicker');
   if (!picker) return;
 
-  const historyGrid = document.getElementById('moodHistoryGrid');
-  const streakNotice = document.getElementById('moodStreakNotice');
-  const savedNotice = document.getElementById('moodSavedNotice');
+  const historyGrid    = document.getElementById('moodHistoryGrid');
+  const streakNotice   = document.getElementById('moodStreakNotice');
+  const savedNotice    = document.getElementById('moodSavedNotice');
+  const noteSection    = document.getElementById('moodNoteSection');
+  const noteInput      = document.getElementById('moodNoteInput');
+  const saveBtn        = document.getElementById('moodSaveBtn');
+  const motivasiModal  = document.getElementById('motivasiModal');
+  const motivasiClose  = document.getElementById('motivasiClose');
+  const motivasiText   = document.getElementById('motivasiText');
+  const motivasiEmoji  = document.getElementById('motivasiEmoji');
 
   const moodMeta = {
-    1: { emoji: '😢', label: 'Sangat sedih', color: 'var(--mood-1)' },
-    2: { emoji: '😟', label: 'Cemas', color: 'var(--mood-2)' },
-    3: { emoji: '😐', label: 'Biasa saja', color: 'var(--mood-3)' },
-    4: { emoji: '🙂', label: 'Senang', color: 'var(--mood-4)' },
-    5: { emoji: '🤩', label: 'Bersemangat', color: 'var(--mood-5)' },
+    1: { emoji: '😢', label: 'Sangat Sedih', color: 'var(--mood-1)' },
+    2: { emoji: '😟', label: 'Cemas',        color: 'var(--mood-2)' },
+    3: { emoji: '😐', label: 'Biasa Saja',   color: 'var(--mood-3)' },
+    4: { emoji: '🙂', label: 'Senang',       color: 'var(--mood-4)' },
+    5: { emoji: '🤩', label: 'Bersemangat',  color: 'var(--mood-5)' },
+  };
+
+  // Kumpulan kata motivasi berdasarkan nilai mood
+  const motivasi = {
+    1: [
+      { emoji: '💛', text: 'Nggak apa-apa merasa sedih. Kamu sudah sangat berani dengan menuliskan perasaanmu hari ini.' },
+      { emoji: '🌧️', text: 'Hari-hari berat pasti akan berlalu. Kamu lebih kuat dari yang kamu kira.' },
+      { emoji: '🤍', text: 'Perasaanmu valid. Kalau butuh cerita lebih, ruang BK selalu terbuka untukmu.' },
+    ],
+    2: [
+      { emoji: '🌬️', text: 'Cemas itu wajar — tanda kamu peduli. Tarik napas pelan-pelan, kamu pasti bisa melewatinya.' },
+      { emoji: '💙', text: 'Satu langkah kecil setiap hari. Kamu tidak harus menyelesaikan semuanya sekarang.' },
+      { emoji: '🌱', text: 'Kecemasanmu bukan kelemahan, itu tandamu sedang tumbuh dan belajar menghadapi sesuatu.' },
+    ],
+    3: [
+      { emoji: '☕', text: 'Hari biasa pun berharga. Nikmati momen kecil yang ada hari ini.' },
+      { emoji: '🌤️', text: 'Kadang "biasa saja" adalah bentuk ketenangan yang sesungguhnya. Tetap semangat ya!' },
+      { emoji: '✨', text: 'Di balik hari yang biasa, ada ribuan hal kecil yang bisa disyukuri.' },
+    ],
+    4: [
+      { emoji: '😊', text: 'Moodmu hari ini bagus! Sebarkan energi positif itu ke orang-orang di sekitarmu.' },
+      { emoji: '🌻', text: 'Senang mendengar kamu merasa senang! Pertahankan semangat ini terus ya.' },
+      { emoji: '🎉', text: 'Hari yang menyenangkan adalah hadiah. Kamu berhak merasakannya sepenuhnya!' },
+    ],
+    5: [
+      { emoji: '🚀', text: 'Wow, energimu luar biasa hari ini! Manfaatkan momen bersemangat ini sebaik-baiknya.' },
+      { emoji: '⚡', text: 'Semangatmu menular! Terus jaga bara api itu dan capai hal-hal luar biasa hari ini.' },
+      { emoji: '🌟', text: 'Kamu bersinar hari ini. Ingat momen ini saat hari-hari terasa berat nanti.' },
+    ],
   };
 
   let history = BK.load(BK.keys.mood, []);
   const today = BK.todayStr();
   const todayEntry = history.find((h) => h.date === today);
+  let selectedValue = todayEntry ? todayEntry.value : null;
 
+  // Tandai pilihan mood jika sudah pernah diisi hari ini
   picker.querySelectorAll('.mood-option').forEach((btn) => {
-    const val = btn.dataset.value;
-    if (todayEntry && todayEntry.value === Number(val)) {
+    const val = Number(btn.dataset.value);
+    if (todayEntry && todayEntry.value === val) {
       btn.setAttribute('aria-pressed', 'true');
     }
     btn.addEventListener('click', () => {
       picker.querySelectorAll('.mood-option').forEach((b) => b.setAttribute('aria-pressed', 'false'));
       btn.setAttribute('aria-pressed', 'true');
+      selectedValue = val;
 
-      const value = Number(val);
+      // Tampilkan bagian catatan setelah mood dipilih
+      if (noteSection) noteSection.style.display = 'block';
+      if (savedNotice) savedNotice.style.display = 'none';
+    });
+  });
+
+  // Jika sudah pernah isi hari ini, tampilkan bagian catatan langsung
+  if (todayEntry && noteSection) noteSection.style.display = 'block';
+
+  // Tombol Simpan
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      if (!selectedValue) {
+        // Belum pilih mood — highlight picker
+        picker.style.outline = '3px solid var(--color-coral)';
+        picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => { picker.style.outline = ''; }, 2000);
+        return;
+      }
+
+      const note = noteInput ? noteInput.value.trim() : '';
+
+      // Simpan mood + catatan ke history
       history = history.filter((h) => h.date !== today);
-      history.push({ date: today, value });
+      history.push({ date: today, value: selectedValue, note });
       history.sort((a, b) => a.date.localeCompare(b.date));
       BK.save(BK.keys.mood, history);
 
+      // Kosongkan textarea & sembunyikan section catatan
+      if (noteInput) noteInput.value = '';
+      if (noteSection) noteSection.style.display = 'none';
+
       if (savedNotice) {
-        savedNotice.textContent = 'Tersimpan — moodmu hari ini: ' + moodMeta[value].label + ' ' + moodMeta[value].emoji;
+        savedNotice.textContent = '✅ Tersimpan — moodmu hari ini: ' + moodMeta[selectedValue].label + ' ' + moodMeta[selectedValue].emoji;
         savedNotice.style.display = 'block';
       }
 
       renderHistory();
       checkStreak();
+
+      // Tampilkan popup motivasi (khususnya jika ada catatan)
+      if (note && motivasiModal) {
+        const pool = motivasi[selectedValue];
+        const pick = pool[Math.floor(Math.random() * pool.length)];
+        if (motivasiText)  motivasiText.textContent  = pick.text;
+        if (motivasiEmoji) motivasiEmoji.textContent = pick.emoji;
+        motivasiModal.classList.add('open');
+      }
     });
+  }
+
+  // Tutup popup motivasi
+  if (motivasiClose && motivasiModal) {
+    motivasiClose.addEventListener('click', () => motivasiModal.classList.remove('open'));
+    motivasiModal.addEventListener('click', (e) => {
+      if (e.target === motivasiModal) motivasiModal.classList.remove('open');
+    });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && motivasiModal) motivasiModal.classList.remove('open');
   });
 
   function renderHistory() {
@@ -242,7 +467,9 @@ function initMoodTracker() {
       const entry = history.find((h) => h.date === d);
       const cell = document.createElement('div');
       cell.className = 'mood-day';
-      cell.title = BK.formatDate(d) + (entry ? ' — ' + moodMeta[entry.value].label : ' — belum diisi');
+      let title = BK.formatDate(d) + (entry ? ' — ' + moodMeta[entry.value].label : ' — belum diisi');
+      if (entry && entry.note) title += ': "' + entry.note + '"';
+      cell.title = title;
       if (entry) cell.style.background = moodMeta[entry.value].color;
       historyGrid.appendChild(cell);
     });
@@ -257,11 +484,7 @@ function initMoodTracker() {
       if (entry && entry.value <= 2) streak++;
       else break;
     }
-    if (streak >= 3) {
-      streakNotice.style.display = 'block';
-    } else {
-      streakNotice.style.display = 'none';
-    }
+    streakNotice.style.display = streak >= 3 ? 'block' : 'none';
   }
 
   renderHistory();
@@ -517,6 +740,232 @@ function initQuiz() {
       resultEl.classList.add('show');
       resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+  }
+}
+
+/* ---------------------------------------------------------
+   HELP MODAL (ⓘ Cara Menggunakan)
+--------------------------------------------------------- */
+function initHelpModal() {
+  // Buka modal ketika tombol [data-help-modal] diklik
+  document.querySelectorAll('[data-help-modal]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.helpModal;
+      const modal = document.getElementById(targetId);
+      if (modal) {
+        modal.classList.add('open');
+        const box = modal.querySelector('.help-modal-box');
+        if (box) box.focus();
+      }
+    });
+  });
+
+  // Tutup modal ketika tombol [data-help-close] diklik
+  document.querySelectorAll('[data-help-close]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const modal = btn.closest('.help-modal-backdrop');
+      if (modal) modal.classList.remove('open');
+    });
+  });
+
+  // Klik backdrop juga menutup
+  document.querySelectorAll('.help-modal-backdrop').forEach((modal) => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+  });
+
+  // Tekan Escape juga menutup
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.help-modal-backdrop.open').forEach((m) => m.classList.remove('open'));
+    }
+  });
+}
+
+/* ---------------------------------------------------------
+   DASHBOARD GURU BK (dashboard-guru.html)
+--------------------------------------------------------- */
+function initGuruDashboard() {
+  if (!document.getElementById('guruDashboard')) return;
+
+  const moodMeta = {
+    1: { emoji: '😢', label: 'Sangat Sedih', color: 'var(--mood-1)' },
+    2: { emoji: '😟', label: 'Cemas',        color: 'var(--mood-2)' },
+    3: { emoji: '😐', label: 'Biasa Saja',   color: 'var(--mood-3)' },
+    4: { emoji: '🙂', label: 'Senang',       color: 'var(--mood-4)' },
+    5: { emoji: '🤩', label: 'Bersemangat',  color: 'var(--mood-5)' },
+  };
+
+  const currentUser = BK.getCurrentUser();
+  const greetEl = document.getElementById('guruGreet');
+  if (greetEl && currentUser) {
+    greetEl.textContent = `Selamat datang, ${currentUser.name}! 👋`;
+  }
+
+  // Hitung ringkasan
+  const moodHistory = BK.load(BK.keys.mood, []);
+  const bookings    = BK.load(BK.keys.bookings, []);
+  const suratList   = BK.load(BK.keys.surat, []);
+  const el = (id) => document.getElementById(id);
+  if (el('statMood'))    el('statMood').textContent    = moodHistory.length;
+  if (el('statBooking')) el('statBooking').textContent = bookings.filter(b => b.status !== 'Disetujui').length;
+  if (el('statSurat'))   el('statSurat').textContent   = suratList.length;
+
+  // Tabs
+  document.querySelectorAll('.guru-tab-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.guru-tab-btn').forEach((b) => b.setAttribute('aria-selected', 'false'));
+      btn.setAttribute('aria-selected', 'true');
+      document.querySelectorAll('.guru-tab-panel').forEach((p) => p.classList.remove('active'));
+      const panel = document.getElementById(btn.dataset.tab);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // ---- Render Mood Siswa ----
+  function renderMood() {
+    const container = document.getElementById('guruMoodList');
+    if (!container) return;
+    const history = BK.load(BK.keys.mood, []).slice().reverse();
+    if (history.length === 0) {
+      container.innerHTML = '<p class="empty-state">Belum ada data mood dari siswa.</p>';
+      return;
+    }
+    container.innerHTML = history.map((entry) => {
+      const m = moodMeta[entry.value];
+      return `
+      <div class="card guru-entry-card" style="border-left:5px solid ${m.color};">
+        <div class="entry-meta">
+          <span class="entry-date">${BK.formatDate(entry.date)}</span>
+          <span style="font-size:1.6rem;">${m.emoji}</span>
+        </div>
+        <p style="margin:4px 0 0; font-weight:700; color:var(--color-ink);">${m.label}</p>
+        ${entry.note
+          ? `<p class="guru-note">"${escapeHtml(entry.note)}"</p>`
+          : '<p style="color:var(--color-ink-faint);font-size:0.82rem;font-style:italic;">Tidak ada catatan.</p>'}
+      </div>`;
+    }).join('');
+  }
+
+  // ---- Render Booking ----
+  function renderBooking() {
+    const container = document.getElementById('guruBookingList');
+    if (!container) return;
+    let list = BK.load(BK.keys.bookings, []);
+    if (list.length === 0) {
+      container.innerHTML = '<p class="empty-state">Belum ada permintaan konsultasi.</p>';
+      return;
+    }
+    container.innerHTML = list.slice().reverse().map((b) => `
+    <div class="card guru-entry-card" data-booking-id="${b.id}">
+      <div class="entry-meta">
+        <span class="entry-date">📅 ${BK.formatDate(b.date)} · ${b.time}</span>
+        <span class="badge ${b.status === 'Disetujui' ? 'badge-ok' : 'badge-wait'}">${b.status}</span>
+      </div>
+      <p style="margin:6px 0 2px;"><strong>${b.teacher}</strong> · ${b.mode}</p>
+      ${b.note ? `<p class="guru-note">"${escapeHtml(b.note)}"</p>` : ''}
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        ${b.status !== 'Disetujui' ? `<button class="btn btn-primary btn-sm" data-approve="${b.id}">✅ Setujui</button>` : '<span style="color:var(--color-teal-dark);font-size:0.85rem;font-weight:700;">✅ Sudah disetujui</span>'}
+        <button class="btn btn-ghost btn-sm" data-cancel="${b.id}">Batalkan</button>
+      </div>
+    </div>`).join('');
+  }
+
+  // ---- Render Surat Kaleng ----
+  function renderSurat() {
+    const container = document.getElementById('guruSuratList');
+    if (!container) return;
+    const list = BK.load(BK.keys.surat, []);
+    if (list.length === 0) {
+      container.innerHTML = '<p class="empty-state">Belum ada surat kaleng masuk.</p>';
+      return;
+    }
+    container.innerHTML = list.slice().reverse().map((s) => {
+      const date = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+      return `
+      <div class="card guru-entry-card" style="border-left:5px solid var(--color-gold);">
+        <div class="entry-meta">
+          <span class="entry-date">📮 ${date}</span>
+          <span class="badge badge-wait">Anonim</span>
+        </div>
+        <p style="margin-top:10px;white-space:pre-wrap;font-size:0.95rem;">${escapeHtml(s.text)}</p>
+      </div>`;
+    }).join('');
+  }
+
+  // Delegasi klik untuk tombol booking
+  const bookingContainer = document.getElementById('guruBookingList');
+  if (bookingContainer) {
+    bookingContainer.addEventListener('click', (e) => {
+      const approveBtn = e.target.closest('[data-approve]');
+      const cancelBtn  = e.target.closest('[data-cancel]');
+      if (approveBtn) {
+        let list = BK.load(BK.keys.bookings, []);
+        list = list.map((b) => b.id === approveBtn.dataset.approve ? { ...b, status: 'Disetujui' } : b);
+        BK.save(BK.keys.bookings, list);
+        renderBooking();
+        // Update stat
+        if (el('statBooking')) el('statBooking').textContent = list.filter(b => b.status !== 'Disetujui').length;
+      }
+      if (cancelBtn) {
+        let list = BK.load(BK.keys.bookings, []);
+        list = list.filter((b) => b.id !== cancelBtn.dataset.cancel);
+        BK.save(BK.keys.bookings, list);
+        renderBooking();
+        if (el('statBooking')) el('statBooking').textContent = list.filter(b => b.status !== 'Disetujui').length;
+      }
+    });
+  }
+
+  renderMood();
+  renderBooking();
+  renderSurat();
+}
+
+/* ---------------------------------------------------------
+   HALAMAN PROFIL (profil.html)
+--------------------------------------------------------- */
+function initProfil() {
+  if (!document.getElementById('profilPage')) return;
+  const currentUser = BK.getCurrentUser();
+  if (!currentUser) return;
+
+  const el = (id) => document.getElementById(id);
+
+  // Avatar
+  const avatarEl = el('profilAvatar');
+  if (avatarEl) {
+    avatarEl.textContent = currentUser.avatar;
+    avatarEl.style.background = currentUser.role === 'guru' ? 'var(--color-coral)' : 'var(--color-teal)';
+  }
+
+  // Info umum
+  if (el('profilName'))  el('profilName').textContent  = currentUser.name;
+  if (el('profilRole'))  el('profilRole').textContent  = currentUser.role === 'guru' ? '👩‍🏫 Guru Bimbingan & Konseling' : '🎓 Siswa';
+  if (el('profilEmail')) el('profilEmail').textContent = currentUser.email || '-';
+
+  // Info khusus siswa
+  if (currentUser.role === 'siswa') {
+    if (el('siswaInfo')) el('siswaInfo').style.display = 'block';
+    if (el('profilKelas')) el('profilKelas').textContent = currentUser.kelas  || '-';
+    if (el('profilNisn'))  el('profilNisn').textContent  = currentUser.nisn   || '-';
+
+    // Statistik mood
+    const moodHistory = BK.load(BK.keys.mood, []);
+    if (el('statMoodTotal')) el('statMoodTotal').textContent = moodHistory.length + ' hari';
+    const lastMood = moodHistory[moodHistory.length - 1];
+    if (el('statLastMood') && lastMood) {
+      const meta = { 1:'😢 Sangat Sedih', 2:'😟 Cemas', 3:'😐 Biasa Saja', 4:'🙂 Senang', 5:'🤩 Bersemangat' };
+      el('statLastMood').textContent = meta[lastMood.value] || '-';
+    }
+  }
+
+  // Info khusus guru
+  if (currentUser.role === 'guru') {
+    if (el('guruInfo')) el('guruInfo').style.display = 'block';
+    if (el('profilNip'))         el('profilNip').textContent         = currentUser.nip          || '-';
+    if (el('profilSpesialisasi')) el('profilSpesialisasi').textContent = currentUser.spesialisasi || '-';
   }
 }
 

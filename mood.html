@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mood Tracker — BK Sahabat</title>
+<title>Mood Tracker — Temu Diri</title>
 <meta name="description" content="Catat mood harianmu dan lihat pola perasaanmu dari waktu ke waktu.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="css/style.css">
@@ -14,8 +14,8 @@
 <header class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">BK</span>
-      BK Sahabat
+      <span class="brand-mark" aria-hidden="true">TD</span>
+      Temu Diri
     </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
     <ul class="nav-links" id="navLinks">
@@ -31,9 +31,18 @@
 <main id="main">
   <section class="section">
     <div class="container" style="max-width:760px;">
-      <span class="eyebrow">Check-in harian</span>
+      <span class="eyebrow">Check-in harian · Wajib diisi</span>
       <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">Gimana perasaanmu hari ini?</h1>
-      <p style="color:var(--color-ink-soft);">Nggak ada jawaban yang salah. Ini cuma buat kamu sendiri lihat pola perasaanmu — tapi kalau kamu izinkan, ini juga bisa bantu Guru BK lebih peka kapan harus menyapa duluan.</p>
+      <p style="color:var(--color-ink-soft);">Sebelum menjelajahi fitur lain, yuk isi dulu check-in mood harianmu. Nggak ada jawaban yang salah — ini hanya untuk membantu kamu dan Guru BK mengetahui kondisimu.</p>
+
+      <button class="help-btn" data-help-modal="helpMoodModal" aria-haspopup="dialog">
+        <i class="help-icon">ⓘ</i> Cara Menggunakan
+      </button>
+
+      <!-- Peringatan jika mencoba navigasi sebelum isi mood -->
+      <div id="moodBlockedWarning" class="mood-blocked-warning" style="display:none;" role="alert">
+        ⚠️ Isi dulu mood check-in kamu sebelum melanjutkan ke fitur lain ya!
+      </div>
 
       <div class="mood-picker" id="moodPicker" role="group" aria-label="Pilih mood hari ini">
         <button class="mood-option" style="--mood-opt:var(--mood-1);" data-value="1" aria-pressed="false">
@@ -53,9 +62,25 @@
         </button>
       </div>
 
-      <p id="moodSavedNotice" class="notice" style="display:none;"></p>
+      <!-- Bagian catatan (muncul setelah memilih mood) -->
+      <div id="moodNoteSection" class="card mood-note-section" style="display:none; margin-top:8px;">
+        <label for="moodNoteInput" style="font-weight:700; font-size:0.95rem; display:block; margin-bottom:8px;">
+          📝 Mau cerita lebih? <span style="font-weight:400; color:var(--color-ink-soft);">(opsional — jika diisi, kamu akan dapat kata-kata motivasi)</span>
+        </label>
+        <textarea
+          id="moodNoteInput"
+          placeholder="Hari ini aku merasa... karena..."
+          rows="4"
+          style="width:100%; resize:vertical;"
+        ></textarea>
+        <button class="btn btn-primary" id="moodSaveBtn" style="margin-top:14px; width:100%;">
+          Simpan Check-in Hari Ini
+        </button>
+      </div>
 
-      <div class="card" id="moodStreakNotice" style="display:none; border-left:5px solid var(--color-danger);">
+      <p id="moodSavedNotice" class="notice" style="display:none; margin-top:16px;"></p>
+
+      <div class="card" id="moodStreakNotice" style="display:none; border-left:5px solid var(--color-danger); margin-top:16px;">
         <h3 style="margin-bottom:6px;">Kamu sepertinya sedang tidak baik-baik saja akhir-akhir ini 💛</h3>
         <p style="color:var(--color-ink-soft); margin-bottom:14px;">Beberapa hari terakhir mood-mu kelihatan berat. Mau ngobrol sama Bapak/Ibu Guru BK?</p>
         <a class="btn btn-primary btn-sm" href="konsultasi.html">Booking Konsultasi</a>
@@ -80,7 +105,7 @@
 
 <footer>
   <div class="container">
-    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Temu Diri — ruang aman untuk kamu tumbuh dan menemukan diri sendiri.</span>
     <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
   </div>
 </footer>
@@ -125,6 +150,41 @@
     </a>
 
     <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<!-- ============ MODAL BANTUAN: MOOD TRACKER ============ -->
+<div class="help-modal-backdrop" id="helpMoodModal">
+  <div class="help-modal-box" role="dialog" aria-modal="true" aria-labelledby="helpMoodTitle" tabindex="-1">
+    <h2 id="helpMoodTitle">📊 Cara Menggunakan Mood Tracker</h2>
+    <div class="help-step">
+      <span class="help-step-num">1</span>
+      <p class="help-step-text"><strong>Pilih emoji mood</strong> yang paling mencerminkan perasaanmu hari ini — dari 😢 Sangat Sedih hingga 🤩 Bersemangat.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">2</span>
+      <p class="help-step-text">Setelah memilih mood, akan muncul kotak <strong>catatan opsional</strong>. Ceritakan apa yang sedang kamu rasakan (boleh dikosongkan).</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">3</span>
+      <p class="help-step-text">Klik <strong>"Simpan Check-in Hari Ini"</strong>. Jika kamu mengisi catatan, kamu akan mendapatkan kata-kata motivasi! 🌟</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">4</span>
+      <p class="help-step-text">Lihat <strong>Riwayat 30 Hari</strong> di bawah untuk melihat pola mood-mu dari waktu ke waktu. Hover tiap kotak untuk lihat detailnya.</p>
+    </div>
+    <div class="help-tip">💡 <strong>Tips:</strong> Mood tracker wajib diisi setiap hari setelah login sebelum bisa mengakses fitur lain.</div>
+    <button class="btn btn-secondary" style="width:100%; margin-top:20px;" data-help-close>Mengerti, tutup panduan</button>
+  </div>
+</div>
+
+<!-- ============ MODAL MOTIVASI ============ -->
+<div class="modal-backdrop" id="motivasiModal">
+  <div class="modal-box motivasi-box" role="dialog" aria-modal="true" aria-labelledby="motivasiTitle">
+    <div class="motivasi-emoji-wrap" id="motivasiEmoji" aria-hidden="true">💛</div>
+    <h2 id="motivasiTitle" style="margin-bottom:12px;">Pesan untuk Kamu ✨</h2>
+    <p id="motivasiText" style="color:var(--color-ink-soft); font-size:1.02rem; line-height:1.65; margin-bottom:24px;"></p>
+    <button class="btn btn-primary btn-block" id="motivasiClose">Makasih, aku siap menjalani hari! 🌟</button>
   </div>
 </div>
 

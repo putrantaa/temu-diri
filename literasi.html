@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pojok Literasi Mental — BK Sahabat</title>
+<title>Pojok Literasi Mental — Temu Diri</title>
 <meta name="description" content="Artikel ringan dan kuis gaya belajar seputar kesehatan mental siswa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="css/style.css">
@@ -14,8 +14,8 @@
 <header class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">BK</span>
-      BK Sahabat
+      <span class="brand-mark" aria-hidden="true">TD</span>
+      Temu Diri
     </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
     <ul class="nav-links" id="navLinks">
@@ -34,6 +34,10 @@
       <span class="eyebrow">Pojok Literasi Mental</span>
       <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:22ch;">Kadang kamu cuma butuh info, bukan sesi konseling.</h1>
       <p style="color:var(--color-ink-soft); max-width:60ch;">Beberapa hal ringan yang mungkin bisa membantumu memahami apa yang sedang kamu rasakan.</p>
+
+      <button class="help-btn" data-help-modal="helpLiterasiModal" aria-haspopup="dialog">
+        <i class="help-icon">ⓘ</i> Cara Menggunakan
+      </button>
 
       <div class="grid grid-3" style="margin-top:32px;">
         <article class="card article-card">
@@ -111,7 +115,7 @@
 
 <footer>
   <div class="container">
-    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Temu Diri — ruang aman untuk kamu tumbuh dan menemukan diri sendiri.</span>
     <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
   </div>
 </footer>
@@ -156,6 +160,27 @@
     </a>
 
     <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<!-- ============ MODAL BANTUAN: LITERASI ============ -->
+<div class="help-modal-backdrop" id="helpLiterasiModal">
+  <div class="help-modal-box" role="dialog" aria-modal="true" aria-labelledby="helpLiterasiTitle" tabindex="-1">
+    <h2 id="helpLiterasiTitle">📚 Cara Menggunakan Literasi Mental</h2>
+    <div class="help-step">
+      <span class="help-step-num">1</span>
+      <p class="help-step-text"><strong>Baca artikel</strong> ringan di bagian atas halaman — ada topik burnout belajar, kecemasan ujian, dan toxic friendship yang mungkin relevan denganmu.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">2</span>
+      <p class="help-step-text">Scroll ke bawah untuk menemukan <strong>Tes Gaya Belajar</strong> — ikuti 5 pertanyaan singkat untuk mengetahui gaya belajar yang paling cocok buatmu.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">3</span>
+      <p class="help-step-text">Klik salah satu <strong>pilihan jawaban</strong> di setiap pertanyaan. Setelah semua pertanyaan terjawab, hasilnya akan otomatis muncul di bagian bawah.</p>
+    </div>
+    <div class="help-tip">💡 <strong>Tips:</strong> Jawab dengan jujur sesuai kebiasaanmu sehari-hari — tidak ada jawaban benar atau salah di tes ini!</div>
+    <button class="btn btn-secondary" style="width:100%; margin-top:20px;" data-help-close>Mengerti, tutup panduan</button>
   </div>
 </div>
 

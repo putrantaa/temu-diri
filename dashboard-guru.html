@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Guru BK — Temu Diri</title>
+<meta name="description" content="Dashboard Guru BK untuk memantau siswa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Langsung ke isi</a>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <a class="brand" href="dashboard-guru.html">
+      <span class="brand-mark" aria-hidden="true">TD</span>
+      Temu Diri
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="dashboard-guru.html" aria-current="page">Dashboard</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <div id="guruDashboard">
+
+    <!-- Hero / Sambutan -->
+    <section class="section" style="padding-bottom:32px;">
+      <div class="container">
+        <span class="eyebrow">Panel Guru BK</span>
+        <h1 id="guruGreet" style="font-size:clamp(1.6rem,3vw,2.2rem);">Selamat datang!</h1>
+        <p style="color:var(--color-ink-soft); max-width:60ch;">Pantau kondisi siswa, kelola jadwal konsultasi, dan baca pesan anonim dari siswa — semuanya dalam satu tempat.</p>
+
+        <!-- Kartu Statistik Ringkasan -->
+        <div class="grid grid-3" style="margin-top:28px; max-width:700px;">
+          <div class="card guru-stat-card">
+            <span class="guru-stat-num" id="statMood">0</span>
+            <span class="guru-stat-label">Entri Mood</span>
+          </div>
+          <div class="card guru-stat-card">
+            <span class="guru-stat-num" id="statBooking">0</span>
+            <span class="guru-stat-label">Booking Menunggu</span>
+          </div>
+          <div class="card guru-stat-card">
+            <span class="guru-stat-num" id="statSurat">0</span>
+            <span class="guru-stat-label">Surat Kaleng</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Profil Siswa -->
+    <section style="background:var(--color-bg-alt); padding:20px 0; border-top:1px solid var(--color-line); border-bottom:1px solid var(--color-line);">
+      <div class="container">
+        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+          <div style="width:46px;height:46px;border-radius:50%;background:var(--color-teal);color:#fff;font-weight:700;display:grid;place-items:center;font-size:0.9rem;flex-shrink:0;">RP</div>
+          <div>
+            <strong style="font-size:1rem;">Rafi Putra Santoso</strong>
+            <span style="display:block;font-size:0.85rem;color:var(--color-ink-soft);">XII IPA 2 &nbsp;·&nbsp; NISN: 0051234567 &nbsp;·&nbsp; rafi.putra@siswa.sch.id</span>
+          </div>
+          <span class="badge badge-ok" style="margin-left:auto;">Siswa Aktif</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs Data Siswa -->
+    <section class="section" style="padding-top:36px;">
+      <div class="container">
+        <div class="tabs" role="tablist" style="margin-bottom:24px;">
+          <button class="tab-btn guru-tab-btn" role="tab" data-tab="tabMood" aria-selected="true">📊 Mood Tracker Siswa</button>
+          <button class="tab-btn guru-tab-btn" role="tab" data-tab="tabBooking" aria-selected="false">📅 Booking Konsultasi</button>
+          <button class="tab-btn guru-tab-btn" role="tab" data-tab="tabSurat" aria-selected="false">📮 Surat Kaleng</button>
+        </div>
+
+        <!-- Tab: Mood -->
+        <div class="tab-panel guru-tab-panel active" id="tabMood" role="tabpanel">
+          <div class="notice" style="margin-bottom:20px;">
+            <strong>Catatan:</strong> Data mood di bawah adalah entri yang diisi oleh siswa setiap hari setelah login. Entri berwarna sesuai tingkat mood siswa.
+          </div>
+          <div id="guruMoodList"></div>
+        </div>
+
+        <!-- Tab: Booking -->
+        <div class="tab-panel guru-tab-panel" id="tabBooking" role="tabpanel">
+          <div class="notice" style="margin-bottom:20px;">
+            <strong>Catatan:</strong> Setujui atau batalkan permintaan konsultasi dari siswa. Setelah disetujui, status berubah menjadi hijau.
+          </div>
+          <div id="guruBookingList"></div>
+        </div>
+
+        <!-- Tab: Surat Kaleng -->
+        <div class="tab-panel guru-tab-panel" id="tabSurat" role="tabpanel">
+          <div class="notice" style="margin-bottom:20px;">
+            <strong>Catatan:</strong> Surat di bawah dikirim secara anonim oleh siswa. Identitas pengirim tidak diketahui (sesuai fitur privasi).
+          </div>
+          <div id="guruSuratList"></div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- #guruDashboard -->
+</main>
+
+<footer>
+  <div class="container">
+    <span>Temu Diri — Panel Guru BK</span>
+    <span>Prototipe situs</span>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="consentModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+    <h2 id="consentTitle">Sebelum mulai, baca dulu ya 🙂</h2>
+    <ul>
+      <li>Ini versi <strong>contoh (prototipe)</strong> dari website BK. Mood, jurnal, dan curhatanmu <strong>hanya tersimpan di browser di perangkat ini</strong> — belum terhubung ke server sekolah atau ke Guru BK sungguhan.</li>
+      <li>Untuk dipakai beneran di sekolah, fitur "Surat Kaleng" dan "Booking Konsultasi" perlu dihubungkan ke sistem sekolah supaya Guru BK benar-benar menerimanya.</li>
+      <li>Kalau kamu butuh bantuan <strong>sekarang juga</strong>, datangi langsung ruang BK di sekolah atau pakai tombol darurat di situs ini.</li>
+    </ul>
+    <label class="consent-check">
+      <input type="checkbox" id="consentCheck">
+      Saya mengerti ini adalah versi contoh/prototipe.
+    </label>
+    <button class="btn btn-primary btn-block" id="consentConfirm" disabled>Mulai Jelajahi</button>
+  </div>
+</div>
+
+<button class="crisis-fab" id="crisisFab">
+  <span class="dot" aria-hidden="true"></span>
+  <span class="label">Butuh Bantuan Segera</span>
+</button>
+<div class="modal-backdrop crisis-modal" id="crisisModal">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="crisisTitle">
+    <h2 id="crisisTitle">Kamu tidak sendirian 💛</h2>
+    <p style="color:var(--color-ink-soft); font-size:0.92rem;">Kalau kamu sedang dalam krisis atau punya pikiran untuk menyakiti diri sendiri, hubungi salah satu ini sekarang:</p>
+    <a class="crisis-contact" href="tel:119"><strong>☎️ Hotline Sejiwa — 119 ext. 8</strong><span>Layanan Kementerian Kesehatan RI, gratis &amp; rahasia, aktif 24 jam.</span></a>
+    <a class="crisis-contact" href="https://wa.me/6281380073120" target="_blank" rel="noopener"><strong>💬 WhatsApp Healing119</strong><span>+62 813-8007-3120 — chat dengan konselor, aktif 24 jam.</span></a>
+    <a class="crisis-contact" href="#"><strong>🏫 Kontak Darurat Sekolah</strong><span>(Isi dengan nomor/kontak Guru BK atau wali kelas sekolahmu di sini)</span></a>
+    <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

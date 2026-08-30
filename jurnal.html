@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jurnal & Curhat — BK Sahabat</title>
+<title>Jurnal & Curhat — Temu Diri</title>
 <meta name="description" content="Tulis di buku harian pribadi atau kirim surat kaleng anonim.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="css/style.css">
@@ -14,8 +14,8 @@
 <header class="navbar">
   <div class="navbar-inner">
     <a class="brand" href="index.html">
-      <span class="brand-mark" aria-hidden="true">BK</span>
-      BK Sahabat
+      <span class="brand-mark" aria-hidden="true">TD</span>
+      Temu Diri
     </a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="navLinks">☰ Menu</button>
     <ul class="nav-links" id="navLinks">
@@ -34,6 +34,10 @@
       <span class="eyebrow">Sekadar meluapkan perasaan</span>
       <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem);">Nggak semua cerita butuh balasan. Kadang cuma butuh ditulis.</h1>
       <p style="color:var(--color-ink-soft);">Pilih mau nulis untuk diri sendiri, atau kirim ke Guru BK tanpa nama.</p>
+
+      <button class="help-btn" data-help-modal="helpJurnalModal" aria-haspopup="dialog">
+        <i class="help-icon">ⓘ</i> Cara Menggunakan
+      </button>
 
       <div class="notice">
         <strong>Catatan versi contoh:</strong> di situs prototipe ini, jurnal & surat kaleng hanya tersimpan di browser perangkatmu sendiri — belum benar-benar terkirim ke Guru BK. Supaya "Surat Kaleng" beneran sampai ke Guru BK, bagian ini perlu disambungkan ke sebuah backend/database sekolah (lihat README).
@@ -80,7 +84,7 @@
 
 <footer>
   <div class="container">
-    <span>BK Sahabat — dibuat untuk mendekatkan siswa dengan layanan bimbingan konseling.</span>
+    <span>Temu Diri — ruang aman untuk kamu tumbuh dan menemukan diri sendiri.</span>
     <span>Prototipe situs · <a href="literasi.html">Pojok Literasi Mental</a></span>
   </div>
 </footer>
@@ -125,6 +129,31 @@
     </a>
 
     <button class="btn btn-secondary btn-block" id="crisisClose">Tutup</button>
+  </div>
+</div>
+
+<!-- ============ MODAL BANTUAN: JURNAL ============ -->
+<div class="help-modal-backdrop" id="helpJurnalModal">
+  <div class="help-modal-box" role="dialog" aria-modal="true" aria-labelledby="helpJurnalTitle" tabindex="-1">
+    <h2 id="helpJurnalTitle">📔 Cara Menggunakan Jurnal &amp; Curhat</h2>
+    <div class="help-step">
+      <span class="help-step-num">1</span>
+      <p class="help-step-text">Ada <strong>dua tab</strong>: "📔 Buku Harian Rahasia" untuk tulisan pribadi, dan "📮 Surat Kaleng" untuk pesan anonim ke Guru BK.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">2</span>
+      <p class="help-step-text"><strong>Buku Harian</strong>: Tulis apa yang kamu rasakan di kotak teks, lalu klik "Simpan Tulisan". Centang opsi <em>"Hapus otomatis 24 jam"</em> jika ingin tulisan hilang sendiri tanpa jejak.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">3</span>
+      <p class="help-step-text"><strong>Surat Kaleng</strong>: Pindah ke tab Surat Kaleng, tulis pesanmu, lalu klik "Kirim Anonim". Namamu tidak akan tercantum sama sekali.</p>
+    </div>
+    <div class="help-step">
+      <span class="help-step-num">4</span>
+      <p class="help-step-text">Kamu bisa <strong>menghapus</strong> entri buku harian kapan saja dengan tombol "Hapus" di pojok kanan setiap entri.</p>
+    </div>
+    <div class="help-tip">💡 <strong>Privasi:</strong> Buku harian hanya tersimpan di browser perangkat ini — tidak ada orang lain yang bisa membacanya.</div>
+    <button class="btn btn-secondary" style="width:100%; margin-top:20px;" data-help-close>Mengerti, tutup panduan</button>
   </div>
 </div>
 
