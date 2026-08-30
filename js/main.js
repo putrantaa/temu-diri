@@ -77,7 +77,7 @@ const BK_USERS = {
     name: 'Bu Alda, S.Pd.',
     nip: '198501012010012001',
     spesialisasi: 'Pertemanan & Keluarga',
-    avatar: 'BR',
+    avatar: 'BA',
     email: 'alda.bk@sekolah.sch.id',
   },
 };
@@ -426,9 +426,12 @@ function initMoodTracker() {
 
       const note = noteInput ? noteInput.value.trim() : '';
 
+      const currentUser = BK.getCurrentUser();
+      const studentName = currentUser && currentUser.role === 'siswa' ? currentUser.name : 'Siswa Anonim';
+
       // Simpan mood + catatan ke history
       history = history.filter((h) => h.date !== today);
-      history.push({ date: today, value: selectedValue, note });
+      history.push({ date: today, value: selectedValue, note, studentName });
       history.sort((a, b) => a.date.localeCompare(b.date));
       BK.save(BK.keys.mood, history);
 
@@ -530,8 +533,12 @@ function initBooking() {
 
     if (!teacher || !mode || !date || !time) return;
 
+    const currentUser = BK.getCurrentUser();
+    const studentName = currentUser && currentUser.role === 'siswa' ? currentUser.name : 'Siswa Anonim';
+
     bookings.push({
       id: BK.uid(),
+      studentName,
       teacher, mode, date, time, note,
       status: 'Menunggu Persetujuan',
     });
@@ -674,12 +681,11 @@ function initDiary() {
 --------------------------------------------------------- */
 function initSuratKaleng() {
   const form = document.getElementById('suratForm');
-  const countEl = document.getElementById('suratCount');
+  const list = document.getElementById('suratList');
   const confirmEl = document.getElementById('suratConfirm');
   if (!form) return;
 
   let surat = BK.load(BK.keys.surat, []);
-  updateCount();
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -688,17 +694,49 @@ function initSuratKaleng() {
     surat.push({ id: BK.uid(), text, timestamp: Date.now() });
     BK.save(BK.keys.surat, surat);
     form.reset();
-    updateCount();
+    renderSurat();
     if (confirmEl) {
       confirmEl.style.display = 'block';
-      confirmEl.textContent = '📮 Suratmu tersimpan secara anonim (lihat catatan demo di atas).';
+      confirmEl.textContent = '📮 Suratmu berhasil dikirim secara anonim ke Guru BK.';
       setTimeout(() => { confirmEl.style.display = 'none'; }, 5000);
     }
   });
 
-  function updateCount() {
-    if (countEl) countEl.textContent = surat.length;
+  if (list) {
+    list.addEventListener('click', (e) => {
+      const delBtn = e.target.closest('[data-del-surat]');
+      if (delBtn) {
+        surat = surat.filter((s) => s.id !== delBtn.dataset.delSurat);
+        BK.save(BK.keys.surat, surat);
+        renderSurat();
+      }
+    });
   }
+
+  function renderSurat() {
+    if (!list) return;
+    if (surat.length === 0) {
+      list.innerHTML = '<p class="empty-state">Belum ada surat kaleng yang kamu kirim.</p>';
+      return;
+    }
+    list.innerHTML = surat
+      .slice()
+      .reverse()
+      .map((s) => {
+        const date = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+        return `
+        <div class="card entry-card">
+          <div class="entry-meta">
+            <span class="entry-date">${date}</span>
+            <button class="entry-delete" data-del-surat="${s.id}">Hapus</button>
+          </div>
+          <p class="entry-text">${escapeHtml(s.text)}</p>
+        </div>`;
+      })
+      .join('');
+  }
+
+  renderSurat();
 }
 
 /* ---------------------------------------------------------
@@ -838,7 +876,7 @@ function initGuruDashboard() {
       return `
       <div class="card guru-entry-card" style="border-left:5px solid ${m.color};">
         <div class="entry-meta">
-          <span class="entry-date">${BK.formatDate(entry.date)}</span>
+          <span class="entry-date">${BK.formatDate(entry.date)} · <strong style="color:var(--color-ink);">${escapeHtml(entry.studentName || 'Siswa Anonim')}</strong></span>
           <span style="font-size:1.6rem;">${m.emoji}</span>
         </div>
         <p style="margin:4px 0 0; font-weight:700; color:var(--color-ink);">${m.label}</p>
@@ -864,7 +902,8 @@ function initGuruDashboard() {
         <span class="entry-date">📅 ${BK.formatDate(b.date)} · ${b.time}</span>
         <span class="badge ${b.status === 'Disetujui' ? 'badge-ok' : 'badge-wait'}">${b.status}</span>
       </div>
-      <p style="margin:6px 0 2px;"><strong>${b.teacher}</strong> · ${b.mode}</p>
+      <p style="margin:6px 0 2px;">Oleh: <strong>${escapeHtml(b.studentName || 'Siswa Anonim')}</strong></p>
+      <p style="margin:0 0 2px; font-size:0.9rem;">Pilihan: <strong>${b.teacher}</strong> · ${b.mode}</p>
       ${b.note ? `<p class="guru-note">"${escapeHtml(b.note)}"</p>` : ''}
       <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
         ${b.status !== 'Disetujui' ? `<button class="btn btn-primary btn-sm" data-approve="${b.id}">Setujui</button>` : '<span style="color:var(--color-teal-dark);font-size:0.85rem;font-weight:700;">✅ Sudah disetujui</span>'}
@@ -885,7 +924,7 @@ function initGuruDashboard() {
     container.innerHTML = list.slice().reverse().map((s) => {
       const date = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
       return `
-      <div class="card guru-entry-card" style="border-left:5px solid var(--color-gold);">
+      <div class="card guru-entry-card">
         <div class="entry-meta">
           <span class="entry-date">📮 ${date}</span>
           <span class="badge badge-wait">Anonim</span>

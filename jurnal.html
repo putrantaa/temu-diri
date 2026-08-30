@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
@@ -76,7 +76,10 @@
           <button type="submit" class="btn btn-primary btn-block">Kirim Anonim</button>
           <p id="suratConfirm" class="notice" style="display:none; margin:16px 0 0;"></p>
         </form>
-        <p style="color:var(--color-ink-faint); font-size:0.85rem; margin-top:14px;">📮 <span id="suratCount">0</span> surat tersimpan di perangkat ini (demo).</p>
+        <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--color-line);">
+          <h3 style="font-size:1.1rem; margin-bottom:12px;">Riwayat Surat Terkirim</h3>
+          <div id="suratList" class="entry-list"></div>
+        </div>
       </div>
     </div>
   </section>
