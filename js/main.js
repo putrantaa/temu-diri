@@ -1,6 +1,6 @@
 /* =========================================================
    TEMU DIRI — main.js
-   Semua data (mood, jurnal, surat kaleng, booking) disimpan
+   Semua data (mood, jurnal, booking) disimpan
    di localStorage browser. INI PROTOTIPE FRONTEND SAJA:
    tidak ada server, jadi data tidak benar-benar terkirim ke
    Guru BK. Lihat README.md untuk penjelasan lengkap & langkah
@@ -13,7 +13,6 @@ const BK = {
     mood: 'bk_mood_history',
     bookings: 'bk_bookings',
     diary: 'bk_diary',
-    surat: 'bk_surat',
     currentUser: 'bk_current_user',
   },
 
@@ -45,7 +44,11 @@ const BK = {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   },
   getCurrentUser() {
-    return this.load(this.keys.currentUser, null);
+    const user = this.load(this.keys.currentUser, null);
+    if (user && user.username && BK_USERS[user.username] && BK_USERS[user.username].kelas) {
+      user.kelas = BK_USERS[user.username].kelas;
+    }
+    return user;
   },
   saveCurrentUser(user) {
     this.save(this.keys.currentUser, user);
@@ -59,20 +62,20 @@ const BK = {
 /* ---------------------------------------------------------
    KREDENSIAL HARDCODED
    Siswa  : username=siswa01   password=siswa123
-   Guru BK: username=gurubk    password=bk2024
+   Guru BK: username=gurubk    password=bk2026
 --------------------------------------------------------- */
 const BK_USERS = {
   siswa01: {
     password: 'siswa123',
     role: 'siswa',
     name: 'Putranta Wisnu Wardhana',
-    kelas: 'XII IPA 2',
+    kelas: '7A',
     nisn: '0051234567',
     avatar: 'PW',
     email: 'putranta.wardhana@siswa.sch.id',
   },
   gurubk: {
-    password: 'bk2024',
+    password: 'bk2026',
     role: 'guru',
     name: 'Bu Alda, S.Pd.',
     nip: '198501012010012001',
@@ -92,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initBooking();
   initJournalTabs();
   initDiary();
-  initSuratKaleng();
   initQuiz();
   initHelpModal();
   initGuruDashboard();
@@ -185,7 +187,7 @@ function initAuth() {
       e.preventDefault();
       const errorEl = document.getElementById('registerError') || document.getElementById('loginError');
       if (errorEl) {
-        errorEl.innerHTML = 'ℹ️ Sistem menggunakan akun tetap. Gunakan:<br><b>Siswa</b>: siswa01 / siswa123<br><b>Guru BK</b>: gurubk / bk2024';
+        errorEl.innerHTML = 'ℹ️ Sistem menggunakan akun tetap. Gunakan:<br><b>Siswa</b>: siswa01 / siswa123<br><b>Guru BK</b>: gurubk / bk2026';
         errorEl.style.display = 'block';
       }
     });
@@ -677,69 +679,6 @@ function initDiary() {
 }
 
 /* ---------------------------------------------------------
-   SURAT KALENG (anonim)
---------------------------------------------------------- */
-function initSuratKaleng() {
-  const form = document.getElementById('suratForm');
-  const list = document.getElementById('suratList');
-  const confirmEl = document.getElementById('suratConfirm');
-  if (!form) return;
-
-  let surat = BK.load(BK.keys.surat, []);
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = form.suratText.value.trim();
-    if (!text) return;
-    surat.push({ id: BK.uid(), text, timestamp: Date.now() });
-    BK.save(BK.keys.surat, surat);
-    form.reset();
-    renderSurat();
-    if (confirmEl) {
-      confirmEl.style.display = 'block';
-      confirmEl.textContent = '📮 Suratmu berhasil dikirim secara anonim ke Guru BK.';
-      setTimeout(() => { confirmEl.style.display = 'none'; }, 5000);
-    }
-  });
-
-  if (list) {
-    list.addEventListener('click', (e) => {
-      const delBtn = e.target.closest('[data-del-surat]');
-      if (delBtn) {
-        surat = surat.filter((s) => s.id !== delBtn.dataset.delSurat);
-        BK.save(BK.keys.surat, surat);
-        renderSurat();
-      }
-    });
-  }
-
-  function renderSurat() {
-    if (!list) return;
-    if (surat.length === 0) {
-      list.innerHTML = '<p class="empty-state">Belum ada surat kaleng yang kamu kirim.</p>';
-      return;
-    }
-    list.innerHTML = surat
-      .slice()
-      .reverse()
-      .map((s) => {
-        const date = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
-        return `
-        <div class="card entry-card">
-          <div class="entry-meta">
-            <span class="entry-date">${date}</span>
-            <button class="entry-delete" data-del-surat="${s.id}">Hapus</button>
-          </div>
-          <p class="entry-text">${escapeHtml(s.text)}</p>
-        </div>`;
-      })
-      .join('');
-  }
-
-  renderSurat();
-}
-
-/* ---------------------------------------------------------
    KUIS GAYA BELAJAR (literasi.html)
 --------------------------------------------------------- */
 function initQuiz() {
@@ -845,11 +784,9 @@ function initGuruDashboard() {
   // Hitung ringkasan
   const moodHistory = BK.load(BK.keys.mood, []);
   const bookings    = BK.load(BK.keys.bookings, []);
-  const suratList   = BK.load(BK.keys.surat, []);
   const el = (id) => document.getElementById(id);
   if (el('statMood'))    el('statMood').textContent    = moodHistory.length;
   if (el('statBooking')) el('statBooking').textContent = bookings.filter(b => b.status !== 'Disetujui').length;
-  if (el('statSurat'))   el('statSurat').textContent   = suratList.length;
 
   // Tabs
   document.querySelectorAll('.guru-tab-btn').forEach((btn) => {
@@ -912,28 +849,6 @@ function initGuruDashboard() {
     </div>`).join('');
   }
 
-  // ---- Render Surat Kaleng ----
-  function renderSurat() {
-    const container = document.getElementById('guruSuratList');
-    if (!container) return;
-    const list = BK.load(BK.keys.surat, []);
-    if (list.length === 0) {
-      container.innerHTML = '<p class="empty-state">Belum ada surat kaleng masuk.</p>';
-      return;
-    }
-    container.innerHTML = list.slice().reverse().map((s) => {
-      const date = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
-      return `
-      <div class="card guru-entry-card">
-        <div class="entry-meta">
-          <span class="entry-date">📮 ${date}</span>
-          <span class="badge badge-wait">Anonim</span>
-        </div>
-        <p style="margin-top:10px;white-space:pre-wrap;font-size:0.95rem;">${escapeHtml(s.text)}</p>
-      </div>`;
-    }).join('');
-  }
-
   // Delegasi klik untuk tombol booking
   const bookingContainer = document.getElementById('guruBookingList');
   if (bookingContainer) {
@@ -960,7 +875,6 @@ function initGuruDashboard() {
 
   renderMood();
   renderBooking();
-  renderSurat();
 }
 
 /* ---------------------------------------------------------

@@ -1,13 +1,13 @@
 # Temu Diri - Prototipe Website Bimbingan Konseling
 
-Website statis (HTML, CSS, JavaScript murni - tanpa framework/build tool) untuk platform BK sekolah. Proyek ini merupakan pembaruan dan rebranding dari "BK Sahabat" menjadi **Temu Diri**, dengan tampilan visual bernuansa biru yang menenangkan.
+Website statis (HTML, CSS, JavaScript murni - tanpa framework/build tool) untuk platform BK sekolah. Proyek ini merupakan pembaruan dan rebranding dari "BK Sahabat" menjadi **Temu Diri**, dengan tampilan visual bernuansa merah maroon dan emas yang hangat sesuai logo Temu Diri.
 
 ## Fitur Utama
 1. **Sistem Role (Mock Auth):** Terdapat dua role pengguna (Siswa & Guru BK) dengan hak akses, navbar, dan halaman profil yang berbeda.
 2. **Mood Tracker Harian:** Siswa wajib mengisi mood harian (disertai nama) setelah login, dengan sistem riwayat 30 hari.
 3. **Booking Konsultasi:** Katalog Guru BK dan form booking interaktif (Siswa mengajukan, Guru BK menyetujui).
-4. **Jurnal & Curhat:** Buku harian rahasia (opsi hapus otomatis 24 jam) & Surat Kaleng anonim. Siswa kini bisa melihat riwayat surat kaleng yang dikirim dan bisa menghapusnya (batal kirim).
-5. **Dashboard Guru BK:** Panel admin khusus untuk memantau mood siswa secara keseluruhan, menyetujui jadwal konsultasi, dan membaca surat kaleng masuk.
+4. **Jurnal & Curhat:** Buku harian rahasia (opsi hapus otomatis 24 jam) yang privat untuk siswa.
+5. **Dashboard Guru BK:** Panel admin khusus untuk memantau mood siswa secara keseluruhan dan menyetujui jadwal konsultasi.
 6. **Tombol Darurat (Crisis Button):** Akses cepat ke kontak bantuan krisis dari halaman mana saja.
 
 ## Struktur Folder
@@ -20,8 +20,9 @@ bk-website/
 ├── dashboard-guru.html  (Panel admin khusus Guru BK)
 ├── mood.html            (Mood tracker harian & riwayat)
 ├── konsultasi.html      (Katalog Guru BK + form pengajuan booking)
-├── jurnal.html          (Buku harian rahasia + form surat kaleng)
+├── jurnal.html          (Buku harian rahasia)
 ├── literasi.html        (Artikel literasi mental + kuis gaya belajar)
+├── image/Temu-Diri.jpeg (Logo resmi Temu Diri)
 ├── css/style.css
 ├── js/main.js
 └── README.md
@@ -32,7 +33,7 @@ bk-website/
 Ini adalah **prototipe frontend murni** - tidak menggunakan *server* atau *database* online. Semua data disimpan secara lokal menggunakan `localStorage` di memori browser. 
 
 - **Data tidak tersinkronisasi antar perangkat.** Data yang dimasukkan siswa di laptop/HP mereka **tidak** akan muncul di laptop Guru BK sungguhan.
-- **Cara Menguji Fitur (Demo):** Agar Guru BK bisa merespons data dari siswa (menyetujui booking atau membaca surat), pengujian **wajib dilakukan di satu browser yang sama**. 
+- **Cara Menguji Fitur (Demo):** Agar Guru BK bisa merespons data dari siswa (menyetujui booking atau memantau mood), pengujian **wajib dilakukan di satu browser yang sama**. 
   *(Alur pengujian: Login sebagai Siswa -> ajukan konsultasi/isi mood -> Logout -> Login sebagai Guru BK -> cek Dashboard).*
 - **Data Login Default:**
   - **Siswa:** Username: `siswa01` | Password: `siswa123`
@@ -49,4 +50,4 @@ Karena `js/main.js` mengandalkan `localStorage` dan pengelolaan halaman berbasis
 - **Kontak Darurat:** Cari elemen dengan kelas `.crisis-contact` di file HTML (pada bagian *modal* darurat) dan ubah nomornya ke nomor Hotline atau Guru BK sekolahmu.
 - **Data Simulasi Pengguna:** Edit variabel `BK_USERS` di bagian atas file `js/main.js` untuk mengganti detail nama, NISN/NIP, kelas, dan avatar bawaan.
 - **Katalog Guru BK:** Sesuaikan data dan keahlian guru pada bagian `#teacherCatalog` di file `konsultasi.html`.
-- **Warna Dasar:** Semua variabel warna utama sekarang dipusatkan di `css/style.css` pada blok `:root` (khususnya warna biru pada `--color-coral` dan turunannya).
+- **Warna Dasar:** Semua variabel warna utama sekarang dipusatkan di `css/style.css` pada blok `:root` (bernuansa merah maroon pada `--color-coral` dan emas pada `--color-gold` / `--color-teal`).

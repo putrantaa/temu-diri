@@ -1,7 +1,7 @@
 /* =========================================================
    TEMU DIRI — style.css
    Tema visual: "surat & amplop" — karena inti platform ini
-   adalah bercerita/curhat lewat tulisan (jurnal, surat kaleng,
+   adalah bercerita/curhat lewat tulisan (jurnal &
    pesan ke Guru BK). Kartu-kartu dibuat seperti kartu pos yang
    sedikit miring, dengan aksen "perangko" di pojok.
    ========================================================= */
@@ -9,31 +9,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 :root {
-  /* --- Warna --- */
-  --color-bg: #F0F4FF;
-  --color-bg-alt: #E4ECFF;
-  --color-ink: #1E2A4A;
-  --color-ink-soft: #4A5478;
-  --color-ink-faint: #8890B0;
-  --color-paper: #FAFCFF;
-  --color-line: rgba(30, 42, 74, 0.12);
+  /* --- Warna (Tema Merah Maroon & Emas sesuai Logo Temu Diri) --- */
+  --color-bg: #FDF8F2;
+  --color-bg-alt: #F6ECE0;
+  --color-ink: #2C1417;
+  --color-ink-soft: #634447;
+  --color-ink-faint: #987A7D;
+  --color-paper: #FFFDF9;
+  --color-line: rgba(139, 21, 27, 0.14);
 
-  /* Warna utama: biru (menggantikan coral/orange) */
-  --color-coral: #3B7CF4;
-  --color-coral-dark: #2563D4;
+  /* Warna utama: merah maroon (sesuai logo) */
+  --color-coral: #9B1B22;
+  --color-coral-dark: #751218;
 
-  --color-teal: #3E8E82;
-  --color-teal-dark: #2E6E64;
-  --color-gold: #E8A93B;
-  --color-danger: #D64545;
-  --color-danger-dark: #B93636;
+  /* Warna aksen kedua: emas / amber hangat (sesuai logo) */
+  --color-teal: #C89228;
+  --color-teal-dark: #966912;
+  --color-gold: #D4A034;
+  --color-danger: #C93535;
+  --color-danger-dark: #9E2424;
 
   /* skala mood 1 (sangat sedih) - 5 (sangat bersemangat) */
-  --mood-1: #7C93C9;
-  --mood-2: #9B8AC4;
-  --mood-3: #B7B0C9;
-  --mood-4: #E8A93B;
-  --mood-5: #3B7CF4;
+  --mood-1: #6E4752;
+  --mood-2: #A35C63;
+  --mood-3: #C4A78D;
+  --mood-4: #D4A034;
+  --mood-5: #9B1B22;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -41,8 +42,8 @@
 
   --radius-card: 20px;
   --radius-sm: 10px;
-  --shadow-card: 0 10px 30px rgba(30, 42, 74, 0.09);
-  --shadow-pop: 0 18px 44px rgba(30, 42, 74, 0.18);
+  --shadow-card: 0 10px 30px rgba(44, 20, 23, 0.08);
+  --shadow-pop: 0 18px 44px rgba(44, 20, 23, 0.18);
   --max-width: 1080px;
 }
 
@@ -112,7 +113,7 @@ select:focus-visible {
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(246, 243, 251, 0.9);
+  background: rgba(253, 248, 242, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-line);
 }
@@ -134,21 +135,31 @@ select:focus-visible {
   font-weight: 700;
   font-size: 1.25rem;
   text-decoration: none;
-  color: var(--color-ink);
+  color: var(--color-coral-dark);
 }
 
-.brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: var(--color-coral);
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-family: var(--font-display);
-  font-weight: 700;
-  transform: rotate(-6deg);
+.brand-mark,
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  padding: 2px;
   flex-shrink: 0;
+}
+
+.auth-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 18px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  padding: 6px;
+  margin: 0 auto 14px;
+  box-shadow: var(--shadow-card);
 }
 
 .nav-links {
@@ -219,7 +230,7 @@ select:focus-visible {
   z-index: 0;
 }
 .hero-blob.b1 { width: 340px; height: 340px; background: var(--color-gold); top: -120px; right: -80px; opacity: 0.35; }
-.hero-blob.b2 { width: 220px; height: 220px; background: var(--color-teal); bottom: -80px; left: -60px; opacity: 0.25; }
+.hero-blob.b2 { width: 220px; height: 220px; background: var(--color-coral); bottom: -80px; left: -60px; opacity: 0.2; }
 
 .hero-inner {
   position: relative;
@@ -243,7 +254,8 @@ select:focus-visible {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-teal-dark);
-  background: rgba(62, 142, 130, 0.12);
+  background: rgba(212, 160, 52, 0.16);
+  border: 1px solid rgba(212, 160, 52, 0.32);
   padding: 6px 12px;
   border-radius: 999px;
   margin-bottom: 18px;
@@ -316,7 +328,7 @@ select:focus-visible {
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
 
-.btn-primary { background: var(--color-coral); color: #fff; box-shadow: 0 8px 18px rgba(242, 120, 92, 0.35); }
+.btn-primary { background: var(--color-coral); color: #fff; box-shadow: 0 8px 18px rgba(155, 27, 34, 0.28); }
 .btn-primary:hover { background: var(--color-coral-dark); }
 
 .btn-secondary { background: var(--color-paper); color: var(--color-ink); border: 1.5px solid var(--color-line); }
@@ -414,7 +426,7 @@ select:focus-visible {
    ========================================================= */
 .modal-backdrop {
   position: fixed; inset: 0;
-  background: rgba(43, 38, 64, 0.55);
+  background: rgba(44, 20, 23, 0.55);
   display: none;
   align-items: center;
   justify-content: center;
@@ -465,7 +477,7 @@ select:focus-visible {
   font-family: var(--font-body);
   font-weight: 800;
   font-size: 0.92rem;
-  box-shadow: 0 10px 26px rgba(59, 124, 244, 0.45); /* Warna biru tembus pandang */
+  box-shadow: 0 10px 26px rgba(155, 27, 34, 0.42);
   cursor: pointer;
 }
 .crisis-fab:hover { background: var(--color-coral-dark); }
@@ -569,9 +581,9 @@ textarea { min-height: 130px; resize: vertical; }
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-.badge-wait { background: rgba(232, 169, 59, 0.2); color: #8a6417; }
-.badge-ok { background: rgba(62, 142, 130, 0.18); color: var(--color-teal-dark); }
-.badge-reschedule { background: rgba(214, 69, 69, 0.14); color: var(--color-danger-dark); }
+.badge-wait { background: rgba(212, 160, 52, 0.22); color: #8a6417; }
+.badge-ok { background: rgba(155, 27, 34, 0.12); color: var(--color-coral-dark); }
+.badge-reschedule { background: rgba(201, 53, 53, 0.14); color: var(--color-danger-dark); }
 
 /* =========================================================
    MOOD TRACKER
@@ -676,7 +688,7 @@ textarea { min-height: 130px; resize: vertical; }
   cursor: pointer;
   font-size: 0.92rem;
 }
-.quiz-option[aria-pressed="true"] { border-color: var(--color-teal); background: rgba(62,142,130,0.1); }
+.quiz-option[aria-pressed="true"] { border-color: var(--color-coral); background: rgba(155, 27, 34, 0.08); }
 .quiz-result { display: none; }
 .quiz-result.show { display: block; }
 
@@ -753,8 +765,8 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(62, 142, 130, 0.1);
-  border: 1.5px solid rgba(62, 142, 130, 0.3);
+  background: rgba(212, 160, 52, 0.14);
+  border: 1.5px solid rgba(212, 160, 52, 0.4);
   color: var(--color-teal-dark);
   border-radius: 999px;
   padding: 6px 16px;
@@ -766,15 +778,15 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
   margin-bottom: 20px;
 }
 .help-btn:hover {
-  background: rgba(62, 142, 130, 0.18);
-  border-color: var(--color-teal);
+  background: rgba(212, 160, 52, 0.24);
+  border-color: var(--color-gold);
 }
 .help-btn .help-icon { font-size: 1rem; font-style: normal; }
 
 /* Backdrop modal bantuan */
 .help-modal-backdrop {
   position: fixed; inset: 0;
-  background: rgba(43, 38, 64, 0.55);
+  background: rgba(44, 20, 23, 0.55);
   display: none;
   align-items: center;
   justify-content: center;
@@ -793,7 +805,7 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
   box-shadow: var(--shadow-pop);
   max-height: 86vh;
   overflow-y: auto;
-  border-top: 5px solid var(--color-teal);
+  border-top: 5px solid var(--color-gold);
   outline: none;
 }
 .help-modal-box h2 {
@@ -812,7 +824,7 @@ footer .container { display: flex; justify-content: space-between; flex-wrap: wr
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--color-teal);
+  background: var(--color-coral);
   color: #fff;
   font-weight: 700;
   font-size: 0.85rem;
